@@ -20,7 +20,7 @@ def InitMatrice(TailleMatrice):
 
     # Affiche dans tkinter la matrice niveau {Statut : En Developpement}
 
-def TkAfficherMatriceEditeur(tkFenetre, iaMatrice):
+def TkAfficherMatriceEditeur(tkFenetre):
     imgMur = PhotoImage(file="MurTexture.gif")
     imgJoueur = PhotoImage(file="PlayerTexture.gif")
     imgSol = PhotoImage(file="NavTexture.gif")
@@ -33,8 +33,8 @@ def TkAfficherMatriceEditeur(tkFenetre, iaMatrice):
 
     for y in range(10):
         for x in range(10):
-            print("Affichage : " + str(x) + ", " + str(y))
-            print(iaMatrice[x][y])
+            print("Affichage : " + str(x) + ", " + str(y))      # Sert au debugging (à supris une fois la fonction terminer)
+            print(iaMatrice[x][y])                              # Sert au debugging (à supris une fois la fonction terminer)
 
             if iaMatrice[x][y] == 0:
                 img = tkCanvas.create_image(x * (ilImageDimension[0]/2) + 12.5, y * (ilImageDimension[1]/2) + 12.5, image=imgSol)
@@ -47,48 +47,63 @@ def TkAfficherMatriceEditeur(tkFenetre, iaMatrice):
 
     # Creer une fenetre {Statut : Fonctionnel}
 
-def GUI(iaMatrice):
+def GUI():
+    global tkFenetre
     tkFenetre = Tk()
-    tkFenetre.title("Labyrinth")
+    tkFenetre.title("Labyrinthe")
     tkFenetre.geometry("1280x720")
     
-    TkMenuPrincipale(tkFenetre, iaMatrice)    
+    TkMenuPrincipale()    
 
     tkFenetre.mainloop()
         
 
     # Créer les widgets du menus principale {Statut : Fonctionnel}
 
-def TkMenuPrincipale(tkFenetre, iaMatrice):
-    tkMenuLabel = Label(tkFenetre, text="Labyrinth")
+def TkMenuPrincipale():
+    EnleverWidget(tkFenetre)
+    
+    tkMenuLabel = Label(tkFenetre, text="Labyrinthe")
     PositionRelative(tkFenetre, tkMenuLabel, [0.5, 0.25])
 
-    tkMenuButtonJouer = Button(tkFenetre, text="Jouer", command=lambda:TkJeu(tkFenetre, iaMatrice))
-    PositionRelative(tkFenetre, tkMenuButtonJouer, [0.5, 0.5])
+    tkMenuButtonJouer = Button(tkFenetre, text="Jouer", command=lambda:TkJeu())
+    PositionRelative(tkFenetre, tkMenuButtonJouer, [0.5, 0.45])
 
-    tkMenuButtonCreer = Button(tkFenetre, text="Créer", command=lambda:TkEditeur(tkFenetre))
-    PositionRelative(tkFenetre, tkMenuButtonCreer, [0.5, 0.625])
+    tkMenuButtonCreer = Button(tkFenetre, text="Créer", command=lambda:TkEditeur())
+    PositionRelative(tkFenetre, tkMenuButtonCreer, [0.5, 0.55])
 
     tkMenuButtonQuitter = Button(tkFenetre, text="Quitter", command=tkFenetre.destroy)
-    PositionRelative(tkFenetre, tkMenuButtonQuitter, [0.5, 0.75])
+    PositionRelative(tkFenetre, tkMenuButtonQuitter, [0.5, 0.65])
 
     # Créer les widgets de l'editeur de niveau {Statut : En Developpement}
 
-def TkEditeur(tkFenetre):
+def TkEditeur():
     EnleverWidget(tkFenetre)
     
     tkEditeurButtonNouveau=Button(tkFenetre, text="Nouvelle Map")
     PositionRelative(tkFenetre, tkEditeurButtonNouveau, [0.80, 0.10])
 
     TkEditeurButtonPoint = Button(tkFenetre, text="Point")
-    PositionRelative(tkFenetre, TkEditeurButtonPoint, [0.88, 0.33])
+    PositionRelative(tkFenetre, TkEditeurButtonPoint, [0.80, 0.33])
+
+    TkEditeurButtonLigne = Button(tkFenetre, text="Ligne")
+    PositionRelative(tkFenetre, TkEditeurButtonLigne, [0.85, 0.33])
+
+    TkEditeurButtonRectangle = Button(tkFenetre, text="Rectangle")
+    PositionRelative(tkFenetre, TkEditeurButtonRectangle, [0.90, 0.33])
+
+    TkEditeurButtonMenu = Button(tkFenetre, text="Retourner au menu", command=lambda:TkMenuPrincipale())
+    PositionRelative(tkFenetre, TkEditeurButtonMenu, [0.875, 0.90])
 
     # Créer les widgets de la partie jeu {Statut : En Developpement}
 
-def TkJeu(tkFenetre, iaMatrice):
+def TkJeu():
     EnleverWidget(tkFenetre)
 
-    TkAfficherMatriceEditeur(tkFenetre, iaMatrice)
+    TkJeuButtonMenu = Button(tkFenetre, text="Retourner au menu", command=lambda:TkMenuPrincipale())
+    PositionRelative(tkFenetre, TkJeuButtonMenu, [0.90, 0.90])
+
+    TkAfficherMatriceEditeur(tkFenetre)
 
 #---------------------------------------------------------------------------------------------------------------
 #                                                 Gameplay
@@ -233,6 +248,7 @@ ilCoordF = [9,3]
 
     # Fonction en cours de test
 
+global iaMatrice
 iaMatrice = InitMatrice(ilTailleMatrice)
 
 Point(iaMatrice, ilCoord)
@@ -244,4 +260,4 @@ Rectangle(iaMatrice, ilCoordE, ilCoordF)
 
 AfficherMatrice(iaMatrice, ilTailleMatrice[1])
 
-GUI(iaMatrice)
+GUI()
