@@ -75,12 +75,19 @@ def TkMenuPrincipale(tkFenetre, iaMatrice):
     # Créer les widgets de l'editeur de niveau {Statut : En Developpement}
 
 def TkEditeur(tkFenetre):
+    EnleverWidget(tkFenetre)
+    
     tkEditeurButtonNouveau=Button(tkFenetre, text="Nouvelle Map")
     PositionRelative(tkFenetre, tkEditeurButtonNouveau, [0.80, 0.10])
+
+    TkEditeurButtonPoint = Button(tkFenetre, text="Point")
+    PositionRelative(tkFenetre, TkEditeurButtonPoint, [0.88, 0.33])
 
     # Créer les widgets de la partie jeu {Statut : En Developpement}
 
 def TkJeu(tkFenetre, iaMatrice):
+    EnleverWidget(tkFenetre)
+
     TkAfficherMatriceEditeur(tkFenetre, iaMatrice)
 
 #---------------------------------------------------------------------------------------------------------------
@@ -181,13 +188,21 @@ def PositionRelative(fenetre, widget, coordRelative = [0.5,0.5]):
 
     widget.place(x = Coord[0], y = Coord[1])
 
+   # Permet de supprimer tout le widget de la fenetre {Statut : Fonctionnel}
+
+def EnleverWidget(tkFenetre):
+    lWidget =tkFenetre.winfo_children()
+
+    for item in lWidget:
+        item.destroy()
+
 #---------------------------------------------------------------------------------------------------------------
-#                                           Prototype de Technologie (cadeau alyona)
+#                                           Prototype de Technologie
 #---------------------------------------------------------------------------------------------------------------
 
 # Generation de niveau aleatoirement {Statut : En Developpemnt}
 
-def RandomLevelGeneration():                  # J'ai remis le code de la fonction Test()
+def RandomLevelGeneration():
     for i in range(x):
         for j in range(y):
             iop=randint(1,10)
