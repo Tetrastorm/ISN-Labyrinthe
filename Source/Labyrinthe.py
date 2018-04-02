@@ -25,8 +25,6 @@ def TkAfficherMatriceEditeur(tkFenetre):
     imgJoueur = PhotoImage(file="C:\\Users\\Valentin Diard\\Source\\Repos\\ISN-Labyrinthe\\Ressource\\PlayerTexture.gif")
     imgSol = PhotoImage(file="C:\\Users\\Valentin Diard\\Source\\Repos\\ISN-Labyrinthe\\Ressource\\NavTexture.gif")
 
-    AfficherMatrice(iaMatrice, 10)
-
     for y in range(10):
         for x in range(10):
             print("Affichage : " + str(x) + ", " + str(y))                                                                                  # Sert au debugging (à supris une fois la fonction terminer)
@@ -35,13 +33,13 @@ def TkAfficherMatriceEditeur(tkFenetre):
 
             if iaMatrice[x][y] == 0:
                 img = Label(tkFenetre, image=imgSol)
-                img.place(x=(x * (ilImageDimension[0]/2) + 12.5), y= (y * (ilImageDimension[1]/2) + 12.5))
+                img.place(x=(x * (ilImageDimension[0]/2) + (ilImageDimension[1]/2)), y= (y * (ilImageDimension[1]/2) + (ilImageDimension[1]/2)))
             elif iaMatrice[x][y] == 1:
                 img = Label(tkFenetre, image=imgMur)
-                img.place(x=(x * (ilImageDimension[0]/2) + 12.5), y= (y * (ilImageDimension[1]/2) + 12.5))
+                img.place(x=(x * (ilImageDimension[0]/2) + (ilImageDimension[0]/2)), y= (y * (ilImageDimension[1]/2) + (ilImageDimension[1]/2)))
             
-    Joueur = Label(tkFenetre, image=imgJoueur)
-    Joueur.place(x=(ilCoordJoueur[0] * (ilImageDimension[0]/2) + 12.5), y= (ilCoordJoueur[1] * (ilImageDimension[1]/2) + 12.5))
+    Joueur = Label(tkFenetre, image=imgJoueu)
+    Joueur.place(x=(ilCoordJoueur[0] * (ilImageDimension[0]/2) + (ilImageDimension[1]/2)), y= (ilCoordJoueur[1] * (ilImageDimension[1]/2) + (ilImageDimension[1]/2)))
 
 #---------------------------------------------------------------------------------------------------------------
 #                                           Interface Utilisateur
@@ -143,7 +141,7 @@ def Deplacement(event, fenetre, coordJoueur, Matrix):
 
 def AfficherMatrice(Matrice, YMax = 0):
     for i in range(YMax):
-        print(Matrice[(YMax - 1) - i])
+        print(Matrice[i])
 
     # Creer un Point dans la matrice {Statut : Fonctionnel}
 
