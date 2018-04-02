@@ -21,13 +21,12 @@ def InitMatrice(TailleMatrice):
     # Affiche dans tkinter la matrice niveau {Statut : En Developpement}
 
 def TkAfficherMatriceEditeur(tkFenetre):
-    imgMur = PhotoImage(file="MurTexture.gif")
-    imgJoueur = PhotoImage(file="PlayerTexture.gif")
-    imgSol = PhotoImage(file="NavTexture.gif")
-
-    ilImageDimension = [25, 25]
-
+    imgMur = PhotoImage(file="C:\\Users\\Valentin Diard\\Source\\Repos\\ISN-Labyrinthe\\Ressource\\MurTexture.gif")
+    imgJoueur = PhotoImage(file="C:\\Users\\Valentin Diard\\Source\\Repos\\ISN-Labyrinthe\\Ressource\\PlayerTexture.gif")
+    imgSol = PhotoImage(file="C:\\Users\\Valentin Diard\\Source\\Repos\\ISN-Labyrinthe\\Ressource\\NavTexture.gif")
+    
     tkCanvas = Canvas(tkFenetre)
+    tkCanvas.pack()
 
     AfficherMatrice(iaMatrice, 10)
 
@@ -35,11 +34,13 @@ def TkAfficherMatriceEditeur(tkFenetre):
         for x in range(10):
             print("Affichage : " + str(x) + ", " + str(y))      # Sert au debugging (à supris une fois la fonction terminer)
             print(iaMatrice[x][y])                              # Sert au debugging (à supris une fois la fonction terminer)
+            print("Image Coordonnate : " + str(x * (ilImageDimension[0]/2) + 12.5 ) + ", " + str(y * (ilImageDimension[1]/2) + 12.5))
 
             if iaMatrice[x][y] == 0:
                 img = tkCanvas.create_image(x * (ilImageDimension[0]/2) + 12.5, y * (ilImageDimension[1]/2) + 12.5, image=imgSol)
             elif iaMatrice[x][y] == 1:
-                img = tkCanvas.create_image(x * (ilImageDimension[0]/2) + 12.5, y * (ilImageDimension[1]/2) + 12.5, image=imgMur)
+                img = tkCanvas.create_image(x * (ilImageDimension[0]/2) + 12.5, y * (ilImageDimension[1]/2) + 12.5, anchor="center", image=imgMur)
+            
 
 #---------------------------------------------------------------------------------------------------------------
 #                                           Interface Utilisateur
@@ -230,8 +231,12 @@ def RandomLevelGeneration():
 #                                             Programme principale
 #---------------------------------------------------------------------------------------------------------------
 
+global imgMur, imgJoueur, imgSol, ilImageDimension, ilTailleMatrice, ilCoordJoueur, iaMatrice
+
 ilTailleMatrice = [10,10]
 ilCoordJoueur=[0,0]
+
+ilImageDimension = [25, 25]
 
     # Variable de Test
 
@@ -248,7 +253,6 @@ ilCoordF = [9,3]
 
     # Fonction en cours de test
 
-global iaMatrice
 iaMatrice = InitMatrice(ilTailleMatrice)
 
 Point(iaMatrice, ilCoord)
