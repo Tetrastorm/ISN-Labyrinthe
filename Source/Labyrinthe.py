@@ -8,38 +8,36 @@ from random import *
 
     # Fonction de creation de la Matrice de la taille souhaite {Statut : Fonctionnel}
 
-def InitMatrice(TailleMatrice):
+def InitMatrice(TailleMatrice, isAdditif = False):
     Matrice = [[0], [0]]
     
     for y in range(TailleMatrice[1]):
         Matrice.append([0])
         for x in range(TailleMatrice[0]):
             Matrice[y].append(0)
-
+            if isAdditif:
+                Matrice[x][y] = 1
     return Matrice
 
     # Affiche dans tkinter la matrice niveau {Statut : En Developpement}
 
 def TkAfficherMatriceEditeur(tkFenetre):    
-    imgMur = PhotoImage(file="C:\\Users\\Valentin Diard\\Source\\Repos\\ISN-Labyrinthe\\Ressource\\MurTexture.gif")
-    imgJoueur = PhotoImage(file="C:\\Users\\Valentin Diard\\Source\\Repos\\ISN-Labyrinthe\\Ressource\\PlayerTexture.gif")
-    imgSol = PhotoImage(file="C:\\Users\\Valentin Diard\\Source\\Repos\\ISN-Labyrinthe\\Ressource\\NavTexture.gif")
+    global tkCanvas
+    tkCanvas=Canvas(tkFenetre)
+    tkCanvas.pack()
 
-    for y in range(10):
-        for x in range(10):
-            print("Affichage : " + str(x) + ", " + str(y))                                                                                  # Sert au debugging (à supris une fois la fonction terminer)
-            print(iaMatrice[x][y])                                                                                                          # Sert au debugging (à supris une fois la fonction terminer)
-            print("Image Coordonnate : " + str(x * (ilImageDimension[0]/2) + 12.5 ) + ", " + str(y * (ilImageDimension[1]/2) + 12.5))       # Sert au debugging (à supris une fois la fonction terminer)
+    for y in range(ilTailleMatrice[1]):
+        for x in range(ilTailleMatrice[1]):
+            print("Affichage : " + str(x) + ", " + str(y))                                                                                                       # Sert au debugging (à supris une fois la fonction terminer)
+            print(iaMatrice[x][y])                                                                                                                               # Sert au debugging (à supris une fois la fonction terminer)
+            print("Image Coordonnate : " + str(x * ilImageDimension[0] + ilImageDimension[0]) + ", " + str(y * ilImageDimension[1] + ilImageDimension[1]))       # Sert au debugging (à supris une fois la fonction terminer)
 
             if iaMatrice[x][y] == 0:
-                img = Label(tkFenetre, image=imgSol)
-                img.place(x=(x * (ilImageDimension[0]/2) + (ilImageDimension[1]/2)), y= (y * (ilImageDimension[1]/2) + (ilImageDimension[1]/2)))
+                case = tkCanvas.create_rectangle((x * ilImageDimension[0]), (y * ilImageDimension[1]), (x * ilImageDimension[0] + 2 * ilImageDimension[0]), (y * ilImageDimension[1] + 2 * ilImageDimension[1]), fill="lightgreen")
             elif iaMatrice[x][y] == 1:
-                img = Label(tkFenetre, image=imgMur)
-                img.place(x=(x * (ilImageDimension[0]/2) + (ilImageDimension[0]/2)), y= (y * (ilImageDimension[1]/2) + (ilImageDimension[1]/2)))
-            
-    Joueur = Label(tkFenetre, image=imgJoueu)
-    Joueur.place(x=(ilCoordJoueur[0] * (ilImageDimension[0]/2) + (ilImageDimension[1]/2)), y= (ilCoordJoueur[1] * (ilImageDimension[1]/2) + (ilImageDimension[1]/2)))
+                case = tkCanvas.create_rectangle((x * ilImageDimension[0]), (y * ilImageDimension[1]), (x * ilImageDimension[0] + 2 * ilImageDimension[0]), (y * ilImageDimension[1] + 2 * ilImageDimension[1]), fill="black")
+    
+    case = tkCanvas.create_rectangle((ilCoordJoueur[0] * ilImageDimension[0]), (ilCoordJoueur[1] * ilImageDimension[1]), (ilCoordJoueur[0] * ilImageDimension[0] + ilImageDimension[0]), (ilCoordJoueur[1] * ilImageDimension[1] + ilImageDimension[1]), fill="turquoise")
 
 #---------------------------------------------------------------------------------------------------------------
 #                                           Interface Utilisateur
@@ -51,7 +49,7 @@ def GUI():
     global tkFenetre
     tkFenetre = Tk()
     tkFenetre.title("Labyrinthe")
-    tkFenetre.geometry("1280x720")
+    tkFenetre.geometry("720x450")
     
     TkMenuPrincipale()    
 
@@ -218,24 +216,42 @@ def EnleverWidget(tkFenetre):
 # Generation de niveau aleatoirement {Statut : En Developpemnt}
 
 def RandomLevelGeneration():
-    for i in range(x):
-        for j in range(y):
-            iop=randint(1,10)
-            if iop==1:
-                matrice[i][j]=1
-            else:
-                matrice[i][j]=0
+    x = int(input("Largeur:  "))  
+    y = int(input("Hauteur:  "))       
+    labyrinthe = generer(x, y)                 
+ 
+    listelignes = []                           
+    while len(labyrinthe) != 0:                 
+        ligne = []                              
+        for i in range (0,x):
+            ligne.append(labyrinthe[0])         
+            labyrinthe.pop(0)
+        listeLignes.append(ligne)
+    print(listelignes)                
+
+
+
+def generer(x, y):
+    base= []                          
+    for i in range(0, x * y):               
+        rand = randint(0, 2)
+        if rand==0:
+            valeurcase=1
+        else:
+            valeurcase=0
+        base.append(valeurcase)              
+    return base
 
 #---------------------------------------------------------------------------------------------------------------
 #                                             Programme principale
 #---------------------------------------------------------------------------------------------------------------
 
-global imgMur, imgJoueur, imgSol, ilImageDimension, ilTailleMatrice, ilCoordJoueur, iaMatrice
+global ilImageDimension, ilTailleMatrice, ilCoordJoueur, iaMatrice
 
-ilTailleMatrice = [10,10]
+ilTailleMatrice = [20,20]
 ilCoordJoueur=[0,0]
 
-ilImageDimension = [25, 25]
+ilImageDimension = [15, 15]
 
     # Variable de Test
 
