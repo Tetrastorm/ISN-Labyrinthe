@@ -21,10 +21,9 @@ def InitMatrice(TailleMatrice, isAdditif = False):
 
     # Affiche dans tkinter la matrice niveau {Statut : En Developpement}
 
-def TkAfficherMatriceEditeur(tkFenetre):    
-    global tkCanvas
+def TkAfficherMatriceEditeur():    
     tkCanvas=Canvas(tkFenetre)
-    tkCanvas.pack()
+    tkCanvas.pack(fill=BOTH, expand=1)
 
     for y in range(ilTailleMatrice[1]):
         for x in range(ilTailleMatrice[1]):
@@ -78,6 +77,8 @@ def TkMenuPrincipale():
 def TkEditeur():
     EnleverWidget(tkFenetre)
     
+    TkAfficherMatriceEditeur()
+
     tkEditeurButtonNouveau=Button(tkFenetre, text="Nouvelle Map")
     PositionRelative(tkFenetre, tkEditeurButtonNouveau, [0.80, 0.10])
 
@@ -97,11 +98,9 @@ def TkEditeur():
 
 def TkJeu():
     EnleverWidget(tkFenetre)
-
+    TkAfficherMatriceEditeur()
     TkJeuButtonMenu = Button(tkFenetre, text="Retourner au menu", command=lambda:TkMenuPrincipale())
     PositionRelative(tkFenetre, TkJeuButtonMenu, [0.90, 0.90])
-
-    TkAfficherMatriceEditeur(tkFenetre)
 
 #---------------------------------------------------------------------------------------------------------------
 #                                                 Gameplay
@@ -246,9 +245,9 @@ def generer(x, y):
 #                                             Programme principale
 #---------------------------------------------------------------------------------------------------------------
 
-global ilImageDimension, ilTailleMatrice, ilCoordJoueur, iaMatrice
+global ilImageDimension, ilTailleMatrice, ilCoordJoueur, iaMatrice, tkCanvas
 
-ilTailleMatrice = [20,20]
+ilTailleMatrice = [30,30]
 ilCoordJoueur=[0,0]
 
 ilImageDimension = [15, 15]
