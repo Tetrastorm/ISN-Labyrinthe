@@ -32,9 +32,9 @@ def TkAfficherMatriceEditeur():
             print("Image Coordonnate : " + str(x * ilImageDimension[0] + ilImageDimension[0]) + ", " + str(y * ilImageDimension[1] + ilImageDimension[1]))       # Sert au debugging (à supris une fois la fonction terminer)
 
             if iaMatrice[x][y] == 0:
-                case = tkCanvas.create_rectangle((x * ilImageDimension[0]), (y * ilImageDimension[1]), (x * ilImageDimension[0] + 2 * ilImageDimension[0]), (y * ilImageDimension[1] + 2 * ilImageDimension[1]), fill="lightgreen")
+                case = tkCanvas.create_rectangle((x * ilImageDimension[0]), (y * ilImageDimension[1]), (x * ilImageDimension[0] + ilImageDimension[0]), (y * ilImageDimension[1] + ilImageDimension[1]), fill="lightgreen")
             elif iaMatrice[x][y] == 1:
-                case = tkCanvas.create_rectangle((x * ilImageDimension[0]), (y * ilImageDimension[1]), (x * ilImageDimension[0] + 2 * ilImageDimension[0]), (y * ilImageDimension[1] + 2 * ilImageDimension[1]), fill="black")
+                case = tkCanvas.create_rectangle((x * ilImageDimension[0]), (y * ilImageDimension[1]), (x * ilImageDimension[0] + ilImageDimension[0]), (y * ilImageDimension[1] + ilImageDimension[1]), fill="black")
     
     case = tkCanvas.create_rectangle((ilCoordJoueur[0] * ilImageDimension[0]), (ilCoordJoueur[1] * ilImageDimension[1]), (ilCoordJoueur[0] * ilImageDimension[0] + ilImageDimension[0]), (ilCoordJoueur[1] * ilImageDimension[1] + ilImageDimension[1]), fill="turquoise")
 
@@ -207,6 +207,10 @@ def EnleverWidget(tkFenetre):
 
     for item in lWidget:
         item.destroy()
+    #Permet de selectionner un ase de la matrice dans l'éditeur Tkinter
+
+def Selection():
+    return 0
 
 #---------------------------------------------------------------------------------------------------------------
 #                                           Prototype de Technologie
@@ -228,8 +232,6 @@ def RandomLevelGeneration():
         listeLignes.append(ligne)
     print(listelignes)                
 
-
-
 def generer(x, y):
     base= []                          
     for i in range(0, x * y):               
@@ -247,7 +249,7 @@ def generer(x, y):
 
 global ilImageDimension, ilTailleMatrice, ilCoordJoueur, iaMatrice, tkCanvas
 
-ilTailleMatrice = [30,30]
+ilTailleMatrice = [30, 30]
 ilCoordJoueur=[0,0]
 
 ilImageDimension = [15, 15]
