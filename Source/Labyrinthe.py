@@ -9,14 +9,18 @@ from random import *
     # Fonction de creation de la Matrice de la taille souhaite {Statut : Fonctionnel}
 
 def InitMatrice(TailleMatrice, isAdditif = False):
-    Matrice = [[0], [0]]
+    if isAdditif:
+        fValue = 1
+    else: 
+        fValue = 0
+
+    Matrice = [[fValue], [fValue]]
     
     for y in range(TailleMatrice[1]):
-        Matrice.append([0])
+        Matrice.append([fValue])
         for x in range(TailleMatrice[0]):
-            Matrice[y].append(0)
-            if isAdditif:
-                Matrice[x][y] = 1
+            Matrice[y].append(fValue)
+
     return Matrice
 
     # Affiche dans tkinter la matrice niveau {Statut : En Developpement}
