@@ -23,7 +23,7 @@ def InitMatrice(TailleMatrice, isAdditif = False):
 
     return Matrice
 
-    # Affiche dans tkinter la matrice niveau {Statut : En Developpement}
+    # Affiche dans tkinter la matrice niveau {Statut : En fonctionnel / à Optimiser}
 
 def TkAfficherMatriceEditeur():    
     tkCanvas=Canvas(tkFenetre)
@@ -31,10 +31,6 @@ def TkAfficherMatriceEditeur():
 
     for y in range(ilTailleMatrice[1]):
         for x in range(ilTailleMatrice[1]):
-            print("Affichage : " + str(x) + ", " + str(y))                                                                                                       # Sert au debugging (à supris une fois la fonction terminer)
-            print(iaMatrice[x][y])                                                                                                                               # Sert au debugging (à supris une fois la fonction terminer)
-            print("Image Coordonnate : " + str(x * ilImageDimension[0] + ilImageDimension[0]) + ", " + str(y * ilImageDimension[1] + ilImageDimension[1]))       # Sert au debugging (à supris une fois la fonction terminer)
-
             if iaMatrice[x][y] == 0:
                 case = tkCanvas.create_rectangle((x * ilImageDimension[0]), (y * ilImageDimension[1]), (x * ilImageDimension[0] + ilImageDimension[0]), (y * ilImageDimension[1] + ilImageDimension[1]), fill="lightgreen")
             elif iaMatrice[x][y] == 1:
@@ -213,8 +209,11 @@ def EnleverWidget(tkFenetre):
         item.destroy()
     #Permet de selectionner un ase de la matrice dans l'éditeur Tkinter
 
-def Selection():
-    return 0
+def Selection(event):
+    MouseCoord[0] = event.X
+    MouseCoord[1] = event.Y
+
+    print("Mouse : x = " + str(MouseCoord[0]) + " y = " + str(MouseCoord[1]))
 
 #---------------------------------------------------------------------------------------------------------------
 #                                           Prototype de Technologie
@@ -247,6 +246,20 @@ def generer(x, y):
         base.append(valeurcase)              
     return base
 
+def AI_Perception(ActorInfo, OtherActorInfo, Range = 5):    
+    if sqrt((OtherActorInfo[0] - ActorInfo[0])^2, (OtherActorInfo[1] - ActorInfo[1])^2) <= Range:
+        ActorDistance = sqrt((ActorInfo[0])^2, (ActorInfo[1])^2)
+        OtherActorDistance = sqrt((OtherActorInfo[0])^2, (OtherActorInfo[1] - 0)^2)
+
+        if ActorInfo[2] == 0:   #x = 0, y = -1
+            return 0
+        elif ActorInfo[2] == 1: #x = 1, y = 0
+            return 0
+        elif ActorInfo[2] == 2: #x = 0, y = 1
+            return 0
+        else:                   #x = -1, y = 0
+            return 0
+
 #---------------------------------------------------------------------------------------------------------------
 #                                             Programme principale
 #---------------------------------------------------------------------------------------------------------------
@@ -254,7 +267,7 @@ def generer(x, y):
 global ilImageDimension, ilTailleMatrice, ilCoordJoueur, iaMatrice, tkCanvas
 
 ilTailleMatrice = [30, 30]
-ilCoordJoueur=[0,0]
+ilCoordJoueur=[0,0, 1]          #[0] coord X, [1] coord Y, [2] Orientation (0 = Up, 1 = Right, 2 = Down, 3 = Left)
 
 ilImageDimension = [15, 15]
 
