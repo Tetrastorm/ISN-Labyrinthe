@@ -82,13 +82,13 @@ def TkEditeur():
     tkEditeurButtonNouveau=Button(tkFenetre, text="Nouvelle Map")
     PositionRelative(tkFenetre, tkEditeurButtonNouveau, [0.80, 0.10])
 
-    TkEditeurButtonPoint = Button(tkFenetre, text="Point")
+    TkEditeurButtonPoint = Button(tkFenetre, text="Point", COMMAND=lambda:Selection(0))
     PositionRelative(tkFenetre, TkEditeurButtonPoint, [0.80, 0.33])
 
-    TkEditeurButtonLigne = Button(tkFenetre, text="Ligne")
+    TkEditeurButtonLigne = Button(tkFenetre, text="Ligne", command = lambda:Selection(1))
     PositionRelative(tkFenetre, TkEditeurButtonLigne, [0.85, 0.33])
 
-    TkEditeurButtonRectangle = Button(tkFenetre, text="Rectangle")
+    TkEditeurButtonRectangle = Button(tkFenetre, text="Rectangle", command=lambda:Selection(2))
     PositionRelative(tkFenetre, TkEditeurButtonRectangle, [0.90, 0.33])
 
     TkEditeurButtonMenu = Button(tkFenetre, text="Retourner au menu", command=lambda:TkMenuPrincipale())
@@ -142,15 +142,15 @@ def AfficherMatrice(Matrice, YMax = 0):
 
     # Creer un Point dans la matrice {Statut : Fonctionnel}
 
-def Point(Matrice, Coord, EstAdditif = True):
+def Point(Coord, EstAdditif = True):
     if EstAdditif:
-        Matrice[Coord[1]][Coord[0]] = 1
+        iaMatrice[Coord[1]][Coord[0]] = 1
     else:
-        Matrice[Coord[1]][Coord[0]] = 0
+        iaMatrice[Coord[1]][Coord[0]] = 0
 
     # Creer une ligne dans la matris {Statut : Fonctionnel}
 
-def Ligne(Matrice, CoordA, CoordB, EstAdditif = True):
+def Ligne(CoordA, CoordB, EstAdditif = True):
     TempCoord = [0,0]
 
     if CoordA[0] == CoordB[0]:
@@ -159,11 +159,11 @@ def Ligne(Matrice, CoordA, CoordB, EstAdditif = True):
         if CoordA[1] > CoordB[1]:
             for i in range(CoordB[1], (CoordA[1] + 1)):
                 TempCoord[1] = i
-                Point(Matrice, TempCoord, EstAdditif)
+                Point(TempCoord, EstAdditif)
         else:
             for i in range(CoordA[1], (CoordB[1] + 1)):
                 TempCoord[1] = i
-                Point(Matrice, TempCoord, EstAdditif)
+                Point(TempCoord, EstAdditif)
 
     elif CoordA[1] == CoordB[1]:
         TempCoord[1] = CoordA[1]
@@ -171,26 +171,26 @@ def Ligne(Matrice, CoordA, CoordB, EstAdditif = True):
         if CoordA[0] > CoordB[0]:
             for i in range(CoordB[0], (CoordA[0] + 1)):
                 TempCoord[0] = i
-                Point(Matrice, TempCoord, EstAdditif)
+                Point(TempCoord, EstAdditif)
         else:
             for i in range(CoordA[0], (CoordB[0] + 1)):
                 TempCoord[0] = i
-                Point(Matrice, TempCoord, EstAdditif)
+                Point(TempCoord, EstAdditif)
     else:
         print("Erreur : La Ligne n'est pas verticale ou horizontale")
 
     # Creer un Reactangle {Statut : Fonctionnel}
     
-def Rectangle(Matrice, CoordA, CoordB, EstAdditif = True):
+def Rectangle(CoordA, CoordB, EstAdditif = True):
     TempCoord = [0,0]
 
     TempCoord = [CoordA[0], CoordB[1]]
-    Ligne(Matrice, CoordA, TempCoord, EstAdditif)
-    Ligne(Matrice, CoordB, TempCoord, EstAdditif)
+    Ligne(CoordA, TempCoord, EstAdditif)
+    Ligne(CoordB, TempCoord, EstAdditif)
 
     TempCoord = [CoordB[0], CoordA[1]]
-    Ligne(Matrice, CoordA, TempCoord, EstAdditif)
-    Ligne(Matrice, TempCoord, CoordB, EstAdditif)
+    Ligne(CoordA, TempCoord, EstAdditif)
+    Ligne(TempCoord, CoordB, EstAdditif)
 
     # Permet de placer un Widget en relatif {Statut : Fonctionnel}
 
@@ -209,11 +209,26 @@ def EnleverWidget(tkFenetre):
         item.destroy()
     #Permet de selectionner un ase de la matrice dans l'éditeur Tkinter
 
-def Selection(event):
+def Selection(Type = 0):
+    CoordA = tkFenetre.bind('<Button 1>', GetMouseCoord)
+    print("Mouse : x = " + str(CoordA[0]) + " y = " + str(CoordB[1]))
+    
+    if Type == 0:    
+        Point(CoordA)
+    else:
+        CoordB = tkFenetre.bind('<Button 1>', GetMouseCoord)
+        print("Mouse : x = " + str(CoordB[0]) + " y = " + str(CoordB[1]))
+
+        if Type == 1:
+            Ligne(CoordA, CoordB)
+        else:
+            Rectangle(CoordA, CoordB)
+
+def GetMouseCoord(event):
     MouseCoord[0] = event.X
     MouseCoord[1] = event.Y
-
-    print("Mouse : x = " + str(MouseCoord[0]) + " y = " + str(MouseCoord[1]))
+    
+    return MouseCoord
 
 #---------------------------------------------------------------------------------------------------------------
 #                                           Prototype de Technologie
@@ -288,12 +303,12 @@ ilCoordF = [9,3]
 
 iaMatrice = InitMatrice(ilTailleMatrice)
 
-Point(iaMatrice, ilCoord)
+Point(ilCoord)
 
-Ligne(iaMatrice, ilCoordA, ilCoordB)
-Ligne(iaMatrice, ilCoordC, ilCoordD)
+Ligne(ilCoordA, ilCoordB)
+Ligne(ilCoordC, ilCoordD)
 
-Rectangle(iaMatrice, ilCoordE, ilCoordF)
+Rectangle(ilCoordE, ilCoordF)
 
 AfficherMatrice(iaMatrice, ilTailleMatrice[1])
 
