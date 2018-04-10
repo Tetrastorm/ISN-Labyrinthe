@@ -228,10 +228,8 @@ def Selection(Type = 0):
             Rectangle(CoordA, CoordB)
 
 def GetMouseCoord(event):
-    MouseCoord = [0,0]
-
-    MouseCoord[0] = event.x
-    MouseCoord[1] = event.y
+    MouseCoord[0]=tkFenetre.winfo_pointerx()
+    MouseCoord[1]=tkFenetre.winfo_pointery()
     
     return MouseCoord
 
