@@ -36,7 +36,7 @@ def TkAfficherMatriceEditeur():
             elif iaMatrice[x][y] == 1:
                 case = tkCanvas.create_rectangle((x * ilImageDimension[0]), (y * ilImageDimension[1]), (x * ilImageDimension[0] + ilImageDimension[0]), (y * ilImageDimension[1] + ilImageDimension[1]), fill="black")
     
-    case = tkCanvas.create_rectangle((ilCoordJoueur[0] * ilImageDimension[0]), (ilCoordJoueur[1] * ilImageDimension[1]), (ilCoordJoueur[0] * ilImageDimension[0] + ilImageDimension[0]), (ilCoordJoueur[1] * ilImageDimension[1] + ilImageDimension[1]), fill="turquoise")
+    cJoueur = tkCanvas.create_rectangle((ilCoordJoueur[0] * ilImageDimension[0]), (ilCoordJoueur[1] * ilImageDimension[1]), (ilCoordJoueur[0] * ilImageDimension[0] + ilImageDimension[0]), (ilCoordJoueur[1] * ilImageDimension[1] + ilImageDimension[1]), fill="turquoise")
 
 #---------------------------------------------------------------------------------------------------------------
 #                                           Interface Utilisateur
@@ -49,7 +49,7 @@ def GUI():
     tkFenetre = Tk()
     tkFenetre.title("Labyrinthe")
     tkFenetre.geometry("720x450")
-    
+
     TkMenuPrincipale()    
 
     tkFenetre.mainloop()
@@ -82,7 +82,7 @@ def TkEditeur():
     tkEditeurButtonNouveau=Button(tkFenetre, text="Nouvelle Map")
     PositionRelative(tkFenetre, tkEditeurButtonNouveau, [0.80, 0.10])
 
-    TkEditeurButtonPoint = Button(tkFenetre, text="Point", COMMAND=lambda:Selection(0))
+    TkEditeurButtonPoint = Button(tkFenetre, text="Point", command=lambda:Selection(0))
     PositionRelative(tkFenetre, TkEditeurButtonPoint, [0.80, 0.33])
 
     TkEditeurButtonLigne = Button(tkFenetre, text="Ligne", command = lambda:Selection(1))
@@ -210,6 +210,9 @@ def EnleverWidget(tkFenetre):
     #Permet de selectionner un ase de la matrice dans l'éditeur Tkinter
 
 def Selection(Type = 0):
+    CoordA = [0, 0]
+    CoordB = [0, 0]
+
     CoordA = tkFenetre.bind('<Button 1>', GetMouseCoord)
     print("Mouse : x = " + str(CoordA[0]) + " y = " + str(CoordB[1]))
     
@@ -225,8 +228,10 @@ def Selection(Type = 0):
             Rectangle(CoordA, CoordB)
 
 def GetMouseCoord(event):
-    MouseCoord[0] = event.X
-    MouseCoord[1] = event.Y
+    MouseCoord = [0,0]
+
+    MouseCoord[0] = event.x
+    MouseCoord[1] = event.y
     
     return MouseCoord
 
@@ -279,7 +284,7 @@ def AI_Perception(ActorInfo, OtherActorInfo, Range = 5):
 #                                             Programme principale
 #---------------------------------------------------------------------------------------------------------------
 
-global ilImageDimension, ilTailleMatrice, ilCoordJoueur, iaMatrice, tkCanvas
+global ilImageDimension, ilTailleMatrice, ilCoordJoueur, cJoueur, iaMatrice, tkCanvas, MouseCoord
 
 ilTailleMatrice = [30, 30]
 ilCoordJoueur=[0,0, 1]          #[0] coord X, [1] coord Y, [2] Orientation (0 = Up, 1 = Right, 2 = Down, 3 = Left)
