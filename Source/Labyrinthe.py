@@ -216,7 +216,7 @@ def Selection(event):
     print("Mouse : x = " + str(MouseCoord[0]) + " y = " + str(MouseCoord[1]))
 
 #---------------------------------------------------------------------------------------------------------------
-#                                           Prototype de Technologie
+#                                           Le Laboratoire
 #---------------------------------------------------------------------------------------------------------------
 
 # Generation de niveau aleatoirement {Statut : En Developpemnt}
