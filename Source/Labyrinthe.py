@@ -253,7 +253,7 @@ def RandomLevelGeneration():
         listeLignes.append(ligne)
     print(listelignes)                
 
-def generer(x, y):
+def Generer(x, y):
     base= []                          
     for i in range(0, x * y):               
         rand = randint(0, 2)
