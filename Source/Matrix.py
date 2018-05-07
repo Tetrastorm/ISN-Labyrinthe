@@ -20,8 +20,9 @@ class Matrix(object):
     def GetMatrix(self):
         return self.iaMatrix
 
-    def SetMatrix(self, iValue, Coord):
-        return 0
+    def SetMatrix(self, iValue, lCoord):
+        if lCoord[0] >= 0  and lCoord <= self.lSize[0] and lCoord[1] >= 0   and lCoord <= self.lSize[1]:
+            self.iaMatrix[Coord[1]][Coord[0]] = iValue
 
     def DebugDisplay(self):
         for i in range(lSize[1]):
