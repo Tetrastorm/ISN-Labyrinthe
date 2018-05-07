@@ -210,34 +210,34 @@ def AI_Perception(ActorInfo, OtherActorInfo, Range = 5):
 
 global ilImageDimension, ilTailleMatrice, ilCoordJoueur, cJoueur, iaMatrice, tkCanvas, MouseCoord
 
-ilTailleMatrice = [30, 30]
-ilCoordJoueur=[0,0, 1]          #[0] coord X, [1] coord Y, [2] Orientation (0 = Up, 1 = Right, 2 = Down, 3 = Left)
+lTailleMatrice = [30, 30]
+lCoordJoueur=[0,0, 1]          #[0] coord X, [1] coord Y, [2] Orientation (0 = Up, 1 = Right, 2 = Down, 3 = Left)
 
 ilImageDimension = [15, 15]
 
     # Variable de Test
 
-ilCoord = [0,0]
+lCoord = [0,0]
 
-ilCoordA = [2,2]
-ilCoordB = [2,5]
+lCoordA = [2,2]
+lCoordB = [2,5]
 
-ilCoordC = [4,1]
-ilCoordD = [8,1]
+lCoordC = [4,1]
+lCoordD = [8,1]
 
-ilCoordE = [5,8]
-ilCoordF = [9,3]
+lCoordE = [5,8]
+lCoordF = [9,3]
 
     # Fonction en cours de test
 
 iaMatrice = Matrix(ilTailleMatrice)
 
-iaMatrice.SetPoint(ilCoord)
+iaMatrice.SetPoint(lCoord)
 
-iaMatrice.SetLine(ilCoordA, ilCoordB)
-iaMatrice.SetLine(ilCoordC, ilCoordD)
+iaMatrice.SetLine(lCoordA, lCoordB)
+iaMatrice.SetLine(lCoordC, lCoordD)
 
-iaMatrice.SetRectangle(ilCoordE, ilCoordF)
+iaMatrice.SetRectangle(lCoordE, lCoordF)
 
 iaMatrice.DebugDisplay()
 

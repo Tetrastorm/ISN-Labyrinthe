@@ -24,6 +24,9 @@ class Matrix(object):
     def GetMatrix(self):
         return self.iaMatrix
 
+    def GetSize(self):
+        return self.lSize
+
     def SetMatrix(self, iValue, lCoord):
         if lCoord[0] >= 0 and lCoord[0] <= self.lSize[0] and lCoord[1] >= 0 and lCoord[1] <= self.lSize[1]:
             self.iaMatrix[Coord[1]][Coord[0]] = iValue
