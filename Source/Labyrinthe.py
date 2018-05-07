@@ -1,27 +1,11 @@
 from tkinter import *
 from math import *
 from random import *
+from Matrix import *
 
 #---------------------------------------------------------------------------------------------------------------
 #                                                Core
 #---------------------------------------------------------------------------------------------------------------
-
-    # Fonction de creation de la Matrice de la taille souhaite {Statut : Fonctionnel}
-
-def InitMatrice(TailleMatrice, isAdditif = False):
-    if isAdditif:
-        fValue = 1
-    else: 
-        fValue = 0
-
-    Matrice = [[fValue], [fValue]]
-    
-    for y in range(TailleMatrice[1]):
-        Matrice.append([fValue])
-        for x in range(TailleMatrice[0]):
-            Matrice[y].append(fValue)
-
-    return Matrice
 
     # Affiche dans tkinter la matrice niveau {Statut : En fonctionnel / à Optimiser}
 
@@ -133,64 +117,6 @@ def Deplacement(event, fenetre, coordJoueur, Matrix):
 #---------------------------------------------------------------------------------------------------------------
 #                                                 Outils
 #---------------------------------------------------------------------------------------------------------------
-
-    # Affiche la matrice dans la console (outil de Debbuging) {Statut : Fonctionnel}
-
-def AfficherMatrice(Matrice, YMax = 0):
-    for i in range(YMax):
-        print(Matrice[i])
-
-    # Creer un Point dans la matrice {Statut : Fonctionnel}
-
-def Point(Coord, EstAdditif = True):
-    if EstAdditif:
-        iaMatrice[Coord[1]][Coord[0]] = 1
-    else:
-        iaMatrice[Coord[1]][Coord[0]] = 0
-
-    # Creer une ligne dans la matris {Statut : Fonctionnel}
-
-def Ligne(CoordA, CoordB, EstAdditif = True):
-    TempCoord = [0,0]
-
-    if CoordA[0] == CoordB[0]:
-        TempCoord[0] = CoordA[0]
-
-        if CoordA[1] > CoordB[1]:
-            for i in range(CoordB[1], (CoordA[1] + 1)):
-                TempCoord[1] = i
-                Point(TempCoord, EstAdditif)
-        else:
-            for i in range(CoordA[1], (CoordB[1] + 1)):
-                TempCoord[1] = i
-                Point(TempCoord, EstAdditif)
-
-    elif CoordA[1] == CoordB[1]:
-        TempCoord[1] = CoordA[1]
-
-        if CoordA[0] > CoordB[0]:
-            for i in range(CoordB[0], (CoordA[0] + 1)):
-                TempCoord[0] = i
-                Point(TempCoord, EstAdditif)
-        else:
-            for i in range(CoordA[0], (CoordB[0] + 1)):
-                TempCoord[0] = i
-                Point(TempCoord, EstAdditif)
-    else:
-        print("Erreur : La Ligne n'est pas verticale ou horizontale")
-
-    # Creer un Reactangle {Statut : Fonctionnel}
-    
-def Rectangle(CoordA, CoordB, EstAdditif = True):
-    TempCoord = [0,0]
-
-    TempCoord = [CoordA[0], CoordB[1]]
-    Ligne(CoordA, TempCoord, EstAdditif)
-    Ligne(CoordB, TempCoord, EstAdditif)
-
-    TempCoord = [CoordB[0], CoordA[1]]
-    Ligne(CoordA, TempCoord, EstAdditif)
-    Ligne(TempCoord, CoordB, EstAdditif)
 
     # Permet de placer un Widget en relatif {Statut : Fonctionnel}
 
@@ -304,15 +230,15 @@ ilCoordF = [9,3]
 
     # Fonction en cours de test
 
-iaMatrice = InitMatrice(ilTailleMatrice)
+iaMatrice = Matrix(ilTailleMatrice)
 
-Point(ilCoord)
+iaMatrice.SetPoint(ilCoord)
 
-Ligne(ilCoordA, ilCoordB)
-Ligne(ilCoordC, ilCoordD)
+iaMatrice.SetLine(ilCoordA, ilCoordB)
+iaMatrice.SetLine(ilCoordC, ilCoordD)
 
-Rectangle(ilCoordE, ilCoordF)
+iaMatrice.SetRectangle(ilCoordE, ilCoordF)
 
-AfficherMatrice(iaMatrice, ilTailleMatrice[1])
+iaMatrice.DebugDisplay()
 
 GUI()
