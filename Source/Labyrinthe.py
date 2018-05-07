@@ -9,18 +9,18 @@ from Matrix import *
 
     # Affiche dans tkinter la matrice niveau {Statut : En fonctionnel / à Optimiser}
 
-def TkAfficherMatriceEditeur():    
+def TkAfficherMatrice():    
     tkCanvas=Canvas(tkFenetre)
     tkCanvas.pack(fill=BOTH, expand=1)
 
-    for y in range(ilTailleMatrice[1]):
-        for x in range(ilTailleMatrice[1]):
-            if iaMatrice[x][y] == 0:
+    for y in range(iaMatrice.GetSize()[0]):
+        for x in range(iaMatrice.GetSize()[1]):
+            if iaMatrice.GetValue([x,y]) == 0:
                 case = tkCanvas.create_rectangle((x * ilImageDimension[0]), (y * ilImageDimension[1]), (x * ilImageDimension[0] + ilImageDimension[0]), (y * ilImageDimension[1] + ilImageDimension[1]), fill="lightgreen")
-            elif iaMatrice[x][y] == 1:
+            elif iaMatrice.GetValue([x, y]) == 1:
                 case = tkCanvas.create_rectangle((x * ilImageDimension[0]), (y * ilImageDimension[1]), (x * ilImageDimension[0] + ilImageDimension[0]), (y * ilImageDimension[1] + ilImageDimension[1]), fill="black")
     
-    cJoueur = tkCanvas.create_rectangle((ilCoordJoueur[0] * ilImageDimension[0]), (ilCoordJoueur[1] * ilImageDimension[1]), (ilCoordJoueur[0] * ilImageDimension[0] + ilImageDimension[0]), (ilCoordJoueur[1] * ilImageDimension[1] + ilImageDimension[1]), fill="turquoise")
+    cJoueur = tkCanvas.create_rectangle((lCoordJoueur[0] * ilImageDimension[0]), (lCoordJoueur[1] * ilImageDimension[1]), (lCoordJoueur[0] * ilImageDimension[0] + ilImageDimension[0]), (lCoordJoueur[1] * ilImageDimension[1] + ilImageDimension[1]), fill="turquoise")
 
 #---------------------------------------------------------------------------------------------------------------
 #                                           Interface Utilisateur
@@ -30,6 +30,7 @@ def TkAfficherMatriceEditeur():
 
 def GUI():
     global tkFenetre
+
     tkFenetre = Tk()
     tkFenetre.title("Labyrinthe")
     tkFenetre.geometry("720x450")
@@ -61,7 +62,7 @@ def TkMenuPrincipale():
 def TkEditeur():
     EnleverWidget(tkFenetre)
     
-    TkAfficherMatriceEditeur()
+    TkAfficherMatrice()
 
     tkEditeurButtonNouveau=Button(tkFenetre, text="Nouvelle Map")
     PositionRelative(tkFenetre, tkEditeurButtonNouveau, [0.80, 0.10])
@@ -82,7 +83,7 @@ def TkEditeur():
 
 def TkJeu():
     EnleverWidget(tkFenetre)
-    TkAfficherMatriceEditeur()
+    TkAfficherMatrice()
     TkJeuButtonMenu = Button(tkFenetre, text="Retourner au menu", command=lambda:TkMenuPrincipale())
     PositionRelative(tkFenetre, TkJeuButtonMenu, [0.90, 0.90])
 
@@ -143,15 +144,15 @@ def Selection(Type = 0):
     print("Mouse : x = " + str(CoordA[0]) + " y = " + str(CoordB[1]))
     
     if Type == 0:    
-        Point(CoordA)
+        iaMatrice.SetPoint(CoordA)
     else:
         CoordB = tkFenetre.bind('<Button 1>', GetMouseCoord)
         print("Mouse : x = " + str(CoordB[0]) + " y = " + str(CoordB[1]))
 
         if Type == 1:
-            Ligne(CoordA, CoordB)
+            iaMatrice.SetLine(CoordA, CoordB)
         else:
-            Rectangle(CoordA, CoordB)
+            iaMatrice.SetRectangle(CoordA, CoordB)
 
 def GetMouseCoord(event):
     MouseCoord[0]=tkFenetre.winfo_pointerx()
@@ -208,7 +209,7 @@ def AI_Perception(ActorInfo, OtherActorInfo, Range = 5):
 #                                             Programme principale
 #---------------------------------------------------------------------------------------------------------------
 
-global ilImageDimension, ilTailleMatrice, ilCoordJoueur, cJoueur, iaMatrice, tkCanvas, MouseCoord
+global ilImageDimension, lCoordJoueur, cJoueur, iaMatrice, tkCanvas, MouseCoord
 
 lTailleMatrice = [30, 30]
 lCoordJoueur=[0,0, 1]          #[0] coord X, [1] coord Y, [2] Orientation (0 = Up, 1 = Right, 2 = Down, 3 = Left)
@@ -230,7 +231,7 @@ lCoordF = [9,3]
 
     # Fonction en cours de test
 
-iaMatrice = Matrix(ilTailleMatrice)
+iaMatrice = Matrix(lTailleMatrice)
 
 iaMatrice.SetPoint(lCoord)
 

@@ -24,19 +24,22 @@ class Matrix(object):
     def GetMatrix(self):
         return self.iaMatrix
 
+    def GetValue(self, lCoord):
+        return self.iaMatrix[lCoord[0]][lCoord[1]]
+
     def GetSize(self):
         return self.lSize
 
-    def SetMatrix(self, iValue, lCoord):
-        if lCoord[0] >= 0 and lCoord[0] <= self.lSize[0] and lCoord[1] >= 0 and lCoord[1] <= self.lSize[1]:
-            self.iaMatrix[Coord[1]][Coord[0]] = iValue
+    def SetMatrix(self, lCoord, iValue):
+        if 0 <= lCoord[0] <= self.lSize[0] and 0 <= lCoord[1] <= self.lSize[1]:
+            self.iaMatrix[lCoord[1]][lCoord[0]] = iValue
         else:
             print("Error : Coordinate is out range of matrix size")
     
     # Debug Function
 
     def DebugDisplay(self):
-        for i in range(lSize[1]):
+        for i in range(self.lSize[1]):
             print(str(self.iaMatrix[i]))
 
     # Save/Load System
@@ -52,7 +55,9 @@ class Matrix(object):
         else:
             self.SetMatrix(lCoord, 0)
 
-    def SetLine(self, lCoordA, lCoordB, bIsAddive = True):        
+    def SetLine(self, lCoordA, lCoordB, bIsAdditive = True):        
+        lTempCoord = [0,0]
+
         if lCoordA[0] == lCoordB[0]:
             lTempCoord[0] = lCoordA[0]
 
