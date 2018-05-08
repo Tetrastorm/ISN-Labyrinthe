@@ -1,6 +1,7 @@
 from tkinter import *
 from math import *
 from random import *
+from time import *
 from Matrix import *
 
 #---------------------------------------------------------------------------------------------------------------
@@ -67,13 +68,13 @@ def TkEditeur():
     tkEditeurButtonNouveau=Button(tkFenetre, text="Nouvelle Map")
     PositionRelative(tkFenetre, tkEditeurButtonNouveau, [0.80, 0.10])
 
-    TkEditeurButtonPoint = Button(tkFenetre, text="Point", command=lambda:Selection(0))
+    TkEditeurButtonPoint = Button(tkFenetre, text="Point", command=None)
     PositionRelative(tkFenetre, TkEditeurButtonPoint, [0.80, 0.33])
 
-    TkEditeurButtonLigne = Button(tkFenetre, text="Ligne", command = lambda:Selection(1))
+    TkEditeurButtonLigne = Button(tkFenetre, text="Ligne", command=None)
     PositionRelative(tkFenetre, TkEditeurButtonLigne, [0.85, 0.33])
 
-    TkEditeurButtonRectangle = Button(tkFenetre, text="Rectangle", command=lambda:Selection(2))
+    TkEditeurButtonRectangle = Button(tkFenetre, text="Rectangle", command=None)
     PositionRelative(tkFenetre, TkEditeurButtonRectangle, [0.90, 0.33])
 
     TkEditeurButtonMenu = Button(tkFenetre, text="Retourner au menu", command=lambda:TkMenuPrincipale())
@@ -88,32 +89,31 @@ def TkJeu():
     PositionRelative(tkFenetre, TkJeuButtonMenu, [0.90, 0.90])
 
 #---------------------------------------------------------------------------------------------------------------
-#                                                 Gameplay
+#                                                Editeur
+#---------------------------------------------------------------------------------------------------------------
+
+#---------------------------------------------------------------------------------------------------------------
+#                                                 Jeu
 #---------------------------------------------------------------------------------------------------------------
 
     # Gère les déplacemnts du joueur {Statut : En Developpement}
 
-def Deplacement(event, fenetre, coordJoueur, Matrix): 
-    fichierimage=Photoimage(file="Image JPEG")                     # Attention les canvas Tkinter prennent par defaut que le gif, si on prend des jpg il faut passer par le lib PIP
-    if fenetre.bind("<Up>,haut"):
-        if matrice[coordJoueur[0], coordJoueur[1]+1] == 0:
-            imgi=can.create_image(coordJoueur[0],coordJoueur[1])
-            coordJoueur[coordJoueur[0],coordJoueur[1]+1]
+def Deplacement(event): 
+    if tkFenetre.bind("<Up>,haut"):
+        if iaMatrice[coordJoueur[0], coordJoueur[1]+1] == 0:
+            lCoordJoueur[lCoordJoueur[0], lCoordJoueur[1]+1]
             
-    elif fenetre.bind("<Down>,bas"):
-        if matrice[coordJoueur[0], coordJoueur[1]-1]==0:
-            imgi=can.create_image(coordJoueur[0],coordJoueur[1])
-            coordJoueur[coordJoueur[0],coordJoueur[1]-1]
+    elif tkFenetre.bind("<Down>,bas"):
+        if iaMatrice[coordJoueur[0], coordJoueur[1]-1]==0:
+            lCoordJoueur[lCoordJoueur[0], lCoordJoueur[1]-1]
             
-    elif fenetre.bind("<Left>,gauche"):
-        if matrice[coordJoueur[0]-1, coordJoueur[1]]==0:
-            imgi=can.create_image(coordJoueur[0],coordJoueur[1])
-            coordJoueur[coordJoueur[[0] -1, coordJoueur[1]]]
+    elif tkFenetre.bind("<Left>,gauche"):
+        if iaMatrice[lCoordJoueur[0]-1, lCoordJoueur[1]]==0:
+            lCoordJoueur[lCoordJoueur[[0] -1, lCoordJoueur[1]]]
             
-    elif fenetre.bind("<Right>,droite"):
-        if matrice[coordJoueur[0]+1, coordJoueur[1]] == 0:
-            imgi=can.create_image(coordJoueur[0],coordJoueur[1])
-            coordJoueur[coordJoueur[[0] +1, coordJoueur[1]]]
+    elif tkFenetre.bind("<Right>,droite"):
+        if iaMatrice[lCoordJoueur[0]+1, lCoordJoueur[1]] == 0:
+            lCoordJoueur[lCoordJoueur[[0] +1, lCoordJoueur[1]]]
 
 #---------------------------------------------------------------------------------------------------------------
 #                                                 Outils
@@ -134,31 +134,12 @@ def EnleverWidget(tkFenetre):
 
     for item in lWidget:
         item.destroy()
-    #Permet de selectionner un ase de la matrice dans l'éditeur Tkinter
-
-def Selection(Type = 0):
-    CoordA = [0, 0]
-    CoordB = [0, 0]
-
-    CoordA = tkFenetre.bind('<Button 1>', GetMouseCoord)
-    print("Mouse : x = " + str(CoordA[0]) + " y = " + str(CoordB[1]))
-    
-    if Type == 0:    
-        iaMatrice.SetPoint(CoordA)
-    else:
-        CoordB = tkFenetre.bind('<Button 1>', GetMouseCoord)
-        print("Mouse : x = " + str(CoordB[0]) + " y = " + str(CoordB[1]))
-
-        if Type == 1:
-            iaMatrice.SetLine(CoordA, CoordB)
-        else:
-            iaMatrice.SetRectangle(CoordA, CoordB)
 
 def GetMouseCoord(event):
-    MouseCoord[0]=tkFenetre.winfo_pointerx()
-    MouseCoord[1]=tkFenetre.winfo_pointery()
+    lMouseCoord[0]=tkFenetre.winfo_pointerx()
+    lMouseCoord[1]=tkFenetre.winfo_pointery()
     
-    return MouseCoord
+    return lMouseCoord
 
 #---------------------------------------------------------------------------------------------------------------
 #                                           Le Laboratoire
@@ -209,10 +190,12 @@ def AI_Perception(ActorInfo, OtherActorInfo, Range = 5):
 #                                             Programme principale
 #---------------------------------------------------------------------------------------------------------------
 
-global ilImageDimension, lCoordJoueur, cJoueur, iaMatrice, tkCanvas, MouseCoord
+global ilImageDimension, lCoordJoueur, cJoueur, iaMatrice, tkCanvas, lMouseCoord
 
 lTailleMatrice = [30, 30]
-lCoordJoueur=[0,0, 1]          #[0] coord X, [1] coord Y, [2] Orientation (0 = Up, 1 = Right, 2 = Down, 3 = Left)
+lCoordJoueur=[0,0, 1]   #[0] coord X, [1] coord Y, [2] Orientation (0 = Up, 1 = Right, 2 = Down, 3 = Left)
+
+lMouseCoord = [0,0]
 
 ilImageDimension = [15, 15]
 
