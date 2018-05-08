@@ -68,7 +68,7 @@ def TkEditeur():
     tkEditeurButtonNouveau=Button(tkFenetre, text="Nouvelle Map")
     PositionRelative(tkFenetre, tkEditeurButtonNouveau, [0.80, 0.10])
 
-    TkEditeurButtonPoint = Button(tkFenetre, text="Point", command=None)
+    TkEditeurButtonPoint = Button(tkFenetre, text="Point", command= lambda:EditeurEvent())
     PositionRelative(tkFenetre, TkEditeurButtonPoint, [0.80, 0.33])
 
     TkEditeurButtonLigne = Button(tkFenetre, text="Ligne", command=None)
@@ -91,6 +91,9 @@ def TkJeu():
 #---------------------------------------------------------------------------------------------------------------
 #                                                Editeur
 #---------------------------------------------------------------------------------------------------------------
+
+def EditeurEvent():
+    tkFenetre.bind('<Button-1>', GetMouseCoord)
 
 #---------------------------------------------------------------------------------------------------------------
 #                                                 Jeu
@@ -136,10 +139,11 @@ def EnleverWidget(tkFenetre):
         item.destroy()
 
 def GetMouseCoord(event):
-    lMouseCoord[0]=tkFenetre.winfo_pointerx()
-    lMouseCoord[1]=tkFenetre.winfo_pointery()
-    
-    return lMouseCoord
+    lMouseCoord[1] = lMouseCoord[0]
+    lMouseCoord[0][0]=tkFenetre.winfo_pointerx()
+    lMouseCoord[0][1]=tkFenetre.winfo_pointery()
+
+    print(str(lMouseCoord))
 
 #---------------------------------------------------------------------------------------------------------------
 #                                           Le Laboratoire
@@ -195,7 +199,7 @@ global ilImageDimension, lCoordJoueur, cJoueur, iaMatrice, tkCanvas, lMouseCoord
 lTailleMatrice = [30, 30]
 lCoordJoueur=[0,0, 1]   #[0] coord X, [1] coord Y, [2] Orientation (0 = Up, 1 = Right, 2 = Down, 3 = Left)
 
-lMouseCoord = [0,0]
+lMouseCoord = [[0,0], [0,0]]
 
 ilImageDimension = [15, 15]
 
