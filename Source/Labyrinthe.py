@@ -36,16 +36,20 @@ def GUI():
 
     tkFenetre = Tk()
     tkFenetre.title("Labyrinthe")
-    tkFenetre.geometry("720x450")
+    tkFenetre.geometry(str(defaultSize[0])+"x"+str(defaultSize[1]))
 
-    TkMenuPrincipale()    
+    tkFenetre.bind('<Configure>', Resize) 
+
+    TkMenuPrincipal()   
 
     tkFenetre.mainloop()
-        
 
     # Créer les widgets du menus principale {Statut : Fonctionnel}
 
-def TkMenuPrincipale():
+def TkMenuPrincipal():
+    print("Menu Principale")
+
+    state = 0
     EnleverWidget(tkFenetre)
     
     tkMenuLabel = Label(tkFenetre, text="Labyrinthe")
@@ -63,6 +67,9 @@ def TkMenuPrincipale():
     # Créer les widgets de l'editeur de niveau {Statut : En Developpement}
 
 def TkEditeur():
+    print("Editeur")
+
+    state = 2
     EnleverWidget(tkFenetre)
     
     TkAfficherMatrice()
@@ -70,16 +77,16 @@ def TkEditeur():
     tkEditeurButtonNouveau=Button(tkFenetre, text="Nouvelle Map")
     PositionRelative(tkFenetre, tkEditeurButtonNouveau, [0.80, 0.10])
 
-    TkEditeurButtonPoint = Button(tkFenetre, text="Point", command= lambda:iaMatrice.SetPoint(lCaseCoord[0]))
+    TkEditeurButtonPoint = Button(tkFenetre, text="Point", command= lambda:iaMatrice.SetPoint(lCaseCoord[0]) and TkAfficherMatrice())
     PositionRelative(tkFenetre, TkEditeurButtonPoint, [0.80, 0.33])
 
-    TkEditeurButtonLigne = Button(tkFenetre, text="Ligne", command=lambda:iaMatrice.SetLine(lCaseCoord[0], lCaseCoord[1]))
+    TkEditeurButtonLigne = Button(tkFenetre, text="Ligne", command=lambda:iaMatrice.SetLine(lCaseCoord[0], lCaseCoord[1]) and TkAfficherMatrice())
     PositionRelative(tkFenetre, TkEditeurButtonLigne, [0.85, 0.33])
 
-    TkEditeurButtonRectangle = Button(tkFenetre, text="Rectangle", command=lambda:iaMatrice.SetRectangle(lCaseCoord[0], lCaseCoord[1]))
+    TkEditeurButtonRectangle = Button(tkFenetre, text="Rectangle", command=lambda:iaMatrice.SetRectangle(lCaseCoord[0], lCaseCoord[1]) and TkAfficherMatrice())
     PositionRelative(tkFenetre, TkEditeurButtonRectangle, [0.90, 0.33])
 
-    TkEditeurButtonMenu = Button(tkFenetre, text="Retourner au menu", command=lambda:TkMenuPrincipale())
+    TkEditeurButtonMenu = Button(tkFenetre, text="Retourner au menu", command=lambda:TkMenuPrincipal())
     PositionRelative(tkFenetre, TkEditeurButtonMenu, [0.875, 0.90])
 
     EditeurEvent()
@@ -87,9 +94,11 @@ def TkEditeur():
     # Créer les widgets de la partie jeu {Statut : En Developpement}
 
 def TkJeu():
+    state = 1
     EnleverWidget(tkFenetre)
+    
     TkAfficherMatrice()
-    TkJeuButtonMenu = Button(tkFenetre, text="Retourner au menu", command=lambda:TkMenuPrincipale())
+    TkJeuButtonMenu = Button(tkFenetre, text="Retourner au menu", command=lambda:TkMenuPrincipal())
     PositionRelative(tkFenetre, TkJeuButtonMenu, [0.90, 0.90])
 
 #---------------------------------------------------------------------------------------------------------------
@@ -145,10 +154,33 @@ def EnleverWidget(tkFenetre):
 def GetCase(event):
     lCaseCoord[1][0] = lCaseCoord[0][0]
     lCaseCoord[1][1] = lCaseCoord[0][1]
-    lCaseCoord[0][0]= int(tkFenetre.winfo_pointerx()/(2*ilImageDimension[0])) 
-    lCaseCoord[0][1]= int(tkFenetre.winfo_pointery()/(2*ilImageDimension[1]))
+    lCaseCoord[0][0]= int((tkFenetre.winfo_pointerx()*scale[0])/(2*ilImageDimension[0])) 
+    lCaseCoord[0][1]= int((tkFenetre.winfo_pointery()*scale[1])/(2*ilImageDimension[1]))
 
     print(str(lCaseCoord))
+
+def Resize(event):
+    print("Configurate")
+
+    tempScale = [0,0]
+    if defaultSize[0] != 0 and defaultSize[1] != 0:
+       tempScale[0] = tkFenetre.winfo_width()/defaultSize[0]
+       tempScale[1] = tkFenetre.winfo_height()/defaultSize[1]
+
+    print("state : " + str(state))
+    print("TempScale : " + str(tempScale))
+    print("scale : " + str(scale))
+
+    if tempScale != scale:
+        # infinite loop
+        if state == 0:
+            TkMenuPrincipal()
+        elif state == 1:
+            TkJeu()
+        else:
+            TkEditeur()
+
+        scale = tempScale
 
 #---------------------------------------------------------------------------------------------------------------
 #                                           Le Laboratoire
@@ -199,12 +231,15 @@ def AI_Perception(ActorInfo, OtherActorInfo, Range = 5):
 #                                             Programme principale
 #---------------------------------------------------------------------------------------------------------------
 
-global ilImageDimension, lCoordJoueur, cJoueur, iaMatrice, tkCanvas, lCaseCoord
+global ilImageDimension, lCoordJoueur, cJoueur, iaMatrice, tkCanvas, lCaseCoord, scale, state, defaultSize
 
+defaultSize = [720, 450]
 lTailleMatrice = [30, 30]
 lCoordJoueur=[0,0, 1]   #[0] coord X, [1] coord Y, [2] Orientation (0 = Up, 1 = Right, 2 = Down, 3 = Left)
 
 lCaseCoord = [[0,0], [0,0]]
+scale = [1.0,1.0]
+state = 0
 
 ilImageDimension = [15, 15]
 
