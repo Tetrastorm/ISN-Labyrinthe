@@ -77,13 +77,13 @@ def TkEditeur():
     tkEditeurButtonNouveau=Button(tkFenetre, text="Nouvelle Map")
     PositionRelative(tkFenetre, tkEditeurButtonNouveau, [0.80, 0.10])
 
-    TkEditeurButtonPoint = Button(tkFenetre, text="Point", command= lambda:Point())
+    TkEditeurButtonPoint = Button(tkFenetre, text="Point", command= lambda:Edition(0))
     PositionRelative(tkFenetre, TkEditeurButtonPoint, [0.80, 0.33])
 
-    TkEditeurButtonLigne = Button(tkFenetre, text="Ligne", command=lambda:mMatrice.SetLine(mCaseCoord[0], mCaseCoord[1]) and TkAfficherMatrice())
+    TkEditeurButtonLigne = Button(tkFenetre, text="Ligne", command=lambda:Edition(1))
     PositionRelative(tkFenetre, TkEditeurButtonLigne, [0.85, 0.33])
 
-    TkEditeurButtonRectangle = Button(tkFenetre, text="Rectangle", command=lambda:mMatrice.SetRectangle(mCaseCoord[0], mCaseCoord[1]) and TkAfficherMatrice())
+    TkEditeurButtonRectangle = Button(tkFenetre, text="Rectangle", command=lambda:Edition(3))
     PositionRelative(tkFenetre, TkEditeurButtonRectangle, [0.90, 0.33])
 
     TkEditeurButtonMenu = Button(tkFenetre, text="Retourner au menu", command=lambda:TkMenuPrincipal())
@@ -191,9 +191,16 @@ def Resize(event):
            else:
                TkEditeur()
 
-def Point():
-    mMatrice.SetPoint(mCaseCoord[0])
-    TkEditeur()
+def Edition(arg):
+    if arg == 0:
+        mMatrice.SetPoint(mCaseCoord[0])
+        TkEditeur()
+    elif arg == 1:
+        mMatrice.SetLine(mCaseCoord[0], mCaseCoord[1])
+        TkEditeur()
+    else:
+        mMatrice.SetRectangle(mCaseCoord[0], mCaseCoord[1])
+        TkEditeur()
 
 #---------------------------------------------------------------------------------------------------------------
 #                                           Le Laboratoire

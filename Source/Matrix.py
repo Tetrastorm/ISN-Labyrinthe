@@ -35,7 +35,7 @@ class Matrix(object):
 
     def SetMatrix(self, lCoord, iValue):
         if 0 <= lCoord[0] < self.lSize[0] and 0 <= lCoord[1] < self.lSize[1]:
-            self.iaMatrix[lCoord[1]][lCoord[0]] = iValue
+            self.iaMatrix[lCoord[0]][lCoord[1]] = iValue
         else:
             print("Error : Coordinate is out range of matrix size")
     
