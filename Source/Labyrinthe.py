@@ -18,12 +18,12 @@ def TkAfficherMatrice():
     for y in range(iaMatrice.GetSize()[0]):
         for x in range(iaMatrice.GetSize()[1]):
             if iaMatrice.GetValue([x,y]) == 0:
-                case = tkCanvas.create_rectangle((x * ilImageDimension[0]), (y * ilImageDimension[1]), (x * ilImageDimension[0] + ilImageDimension[0]), (y * ilImageDimension[1] + ilImageDimension[1]), fill="lightgreen")
+                case = tkCanvas.create_rectangle((x * (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1])), (x * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="lightgreen")
             elif iaMatrice.GetValue([x, y]) == 1:
-                case = tkCanvas.create_rectangle((x * ilImageDimension[0]), (y * ilImageDimension[1]), (x * ilImageDimension[0] + ilImageDimension[0]), (y * ilImageDimension[1] + ilImageDimension[1]), fill="black")
+                case = tkCanvas.create_rectangle((x * (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1])), (x * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="black")
             ObjetMatrice.SetMatrix([x,y], case)
 
-    cJoueur = tkCanvas.create_rectangle((lCoordJoueur[0] * ilImageDimension[0]), (lCoordJoueur[1] * ilImageDimension[1]), (lCoordJoueur[0] * ilImageDimension[0] + ilImageDimension[0]), (lCoordJoueur[1] * ilImageDimension[1] + ilImageDimension[1]), fill="turquoise")
+    cJoueur = tkCanvas.create_rectangle((lCoordJoueur[0] * (ilImageDimension[0]*lScale[0])), (lCoordJoueur[1] * (ilImageDimension[1]*lScale[1])), (lCoordJoueur[0] * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (lCoordJoueur[1] * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="turquoise")
 
 #---------------------------------------------------------------------------------------------------------------
 #                                           Interface Utilisateur
@@ -47,9 +47,10 @@ def GUI():
     # Créer les widgets du menus principale {Statut : Fonctionnel}
 
 def TkMenuPrincipal():
-    print("Menu Principale")
-
+    print("Loading : Menu Principal")
     iState = 0
+    print(str(iState))
+
     EnleverWidget()
     
     tkMenuLabel = Label(tkFenetre, text="Labyrinthe")
@@ -67,9 +68,10 @@ def TkMenuPrincipal():
     # Créer les widgets de l'editeur de niveau {Statut : En Developpement}
 
 def TkEditeur():
-    print("Editeur")
+    print("Loading : Editeur")
 
     iState = 2
+    print(str(iState))
     EnleverWidget()
     
     TkAfficherMatrice()
@@ -94,7 +96,10 @@ def TkEditeur():
     # Créer les widgets de la partie jeu {Statut : En Developpement}
 
 def TkJeu():
+    print("Loading : Jeu")
+
     iState = 1
+    print(str(iState))
     EnleverWidget()
     
     TkAfficherMatrice()
@@ -154,35 +159,31 @@ def EnleverWidget():
 def GetCase(event):
     lCaseCoord[1][0] = lCaseCoord[0][0]
     lCaseCoord[1][1] = lCaseCoord[0][1]
-    lCaseCoord[0][0]= int((tkFenetre.winfo_pointerx()*scale[0])/(2*ilImageDimension[0])) 
-    lCaseCoord[0][1]= int((tkFenetre.winfo_pointery()*scale[1])/(2*ilImageDimension[1]))
-
+    lCaseCoord[0][0]= int((tkFenetre.winfo_pointerx()-tkFenetre.winfo_rootx())/(ilImageDimension[0]*lScale[0])) 
+    lCaseCoord[0][1]= int((tkFenetre.winfo_pointery()-tkFenetre.winfo_rooty())/(ilImageDimension[1]*lScale[1]))
+    print(str(tkFenetre.winfo_pointerx()-tkFenetre.winfo_rootx()) + ", Y = " + str(tkFenetre.winfo_pointery()-tkFenetre.winfo_rooty()))
     print(str(lCaseCoord))
 
 def Resize(event):
-    print("Configure")
-
     lTempScale = [0,0]
     if lDefaultSize[0] != 0 and lDefaultSize[1] != 0:
        lTempScale[0] = tkFenetre.winfo_width()/lDefaultSize[0]
        lTempScale[1] = tkFenetre.winfo_height()/lDefaultSize[1]
-
-    print("state : " + str(iState))
-    print("TempScale : " + str(lTempScale))
-    print("scale : " + str(lScale))
-
-    if lTempScale != lScale:
-        lScale[0] = lTempScale[0]
-        lScale[1] = lTempScale[1]
+       
+       if lTempScale != lScale:
+           lScale[0] = lTempScale[0]
+           lScale[1] = lTempScale[1]
+            
+           print("Resizing")
+           print("Reloading state : " + str(iState))
+           print("New scale : " + str(lScale))
         
-        # infinite loop hazard
-        
-        if iState == 0:
-            TkMenuPrincipal()
-        elif iState == 1:
-            TkJeu()
-        else:
-            TkEditeur()
+           if iState == 0:
+               TkMenuPrincipal()
+           elif iState == 1:
+               TkJeu()
+           else:
+               TkEditeur()
 
 #---------------------------------------------------------------------------------------------------------------
 #                                           Le Laboratoire
