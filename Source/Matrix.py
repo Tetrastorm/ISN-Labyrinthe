@@ -24,6 +24,9 @@ class Matrix(object):
     def GetMatrix(self):
         return self.iaMatrix
 
+    def GetValue(self, Coord):
+        return self.iaMatrix[Coord[0]][Coord[1]]
+
     def GetValue(self, lCoord):
         return self.iaMatrix[lCoord[0]][lCoord[1]]
 
@@ -31,7 +34,7 @@ class Matrix(object):
         return self.lSize
 
     def SetMatrix(self, lCoord, iValue):
-        if 0 <= lCoord[0] <= self.lSize[0] and 0 <= lCoord[1] <= self.lSize[1]:
+        if 0 <= lCoord[0] < self.lSize[0] and 0 <= lCoord[1] < self.lSize[1]:
             self.iaMatrix[lCoord[1]][lCoord[0]] = iValue
         else:
             print("Error : Coordinate is out range of matrix size")

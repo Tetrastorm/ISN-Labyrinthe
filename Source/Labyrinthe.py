@@ -9,19 +9,17 @@ from Matrix import *
 
     # Affiche dans tkinter la matrice niveau {Statut : En fonctionnel / à Optimiser}
 
-def TkAfficherMatrice():    
+def TkAfficherMatrice():
     tkCanvas=Canvas(tkFenetre)
     tkCanvas.pack(fill=BOTH, expand=1)
 
-    ObjetMatrice = Matrix(iaMatrice.GetSize())
-
-    for y in range(iaMatrice.GetSize()[0]):
-        for x in range(iaMatrice.GetSize()[1]):
-            if iaMatrice.GetValue([x,y]) == 0:
+    for y in range(mMatrice.GetSize()[0]):
+        for x in range(mMatrice.GetSize()[1]):
+            if mMatrice.GetValue([x,y]) == 0:
                 case = tkCanvas.create_rectangle((x * (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1])), (x * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="lightgreen")
-            elif iaMatrice.GetValue([x, y]) == 1:
+            elif mMatrice.GetValue([x, y]) == 1:
                 case = tkCanvas.create_rectangle((x * (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1])), (x * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="black")
-            ObjetMatrice.SetMatrix([x,y], case)
+            mObjetMatrice.SetMatrix([x,y], case)
 
     cJoueur = tkCanvas.create_rectangle((lCoordJoueur[0] * (ilImageDimension[0]*lScale[0])), (lCoordJoueur[1] * (ilImageDimension[1]*lScale[1])), (lCoordJoueur[0] * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (lCoordJoueur[1] * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="turquoise")
 
@@ -79,13 +77,13 @@ def TkEditeur():
     tkEditeurButtonNouveau=Button(tkFenetre, text="Nouvelle Map")
     PositionRelative(tkFenetre, tkEditeurButtonNouveau, [0.80, 0.10])
 
-    TkEditeurButtonPoint = Button(tkFenetre, text="Point", command= lambda:iaMatrice.SetPoint(lCaseCoord[0]) and TkAfficherMatrice())
+    TkEditeurButtonPoint = Button(tkFenetre, text="Point", command= lambda:Point())
     PositionRelative(tkFenetre, TkEditeurButtonPoint, [0.80, 0.33])
 
-    TkEditeurButtonLigne = Button(tkFenetre, text="Ligne", command=lambda:iaMatrice.SetLine(lCaseCoord[0], lCaseCoord[1]) and TkAfficherMatrice())
+    TkEditeurButtonLigne = Button(tkFenetre, text="Ligne", command=lambda:mMatrice.SetLine(mCaseCoord[0], mCaseCoord[1]) and TkAfficherMatrice())
     PositionRelative(tkFenetre, TkEditeurButtonLigne, [0.85, 0.33])
 
-    TkEditeurButtonRectangle = Button(tkFenetre, text="Rectangle", command=lambda:iaMatrice.SetRectangle(lCaseCoord[0], lCaseCoord[1]) and TkAfficherMatrice())
+    TkEditeurButtonRectangle = Button(tkFenetre, text="Rectangle", command=lambda:mMatrice.SetRectangle(mCaseCoord[0], mCaseCoord[1]) and TkAfficherMatrice())
     PositionRelative(tkFenetre, TkEditeurButtonRectangle, [0.90, 0.33])
 
     TkEditeurButtonMenu = Button(tkFenetre, text="Retourner au menu", command=lambda:TkMenuPrincipal())
@@ -99,6 +97,7 @@ def TkJeu():
     print("Loading : Jeu")
 
     iState = 1
+
     print(str(iState))
     EnleverWidget()
     
@@ -121,19 +120,19 @@ def EditeurEvent():
 
 def Deplacement(event): 
     if tkFenetre.bind("<Up>,haut"):
-        if iaMatrice[coordJoueur[0], coordJoueur[1]+1] == 0:
+        if mMatrice[lCoordJoueur[0], lCoordJoueur[1]+1] == 0:
             lCoordJoueur[lCoordJoueur[0], lCoordJoueur[1]+1]
             
     elif tkFenetre.bind("<Down>,bas"):
-        if iaMatrice[coordJoueur[0], coordJoueur[1]-1]==0:
+        if mMatrice[lCoordJoueur[0], lCoordJoueur[1]-1]==0:
             lCoordJoueur[lCoordJoueur[0], lCoordJoueur[1]-1]
             
     elif tkFenetre.bind("<Left>,gauche"):
-        if iaMatrice[lCoordJoueur[0]-1, lCoordJoueur[1]]==0:
+        if mMatrice[lCoordJoueur[0]-1, lCoordJoueur[1]]==0:
             lCoordJoueur[lCoordJoueur[[0] -1, lCoordJoueur[1]]]
             
     elif tkFenetre.bind("<Right>,droite"):
-        if iaMatrice[lCoordJoueur[0]+1, lCoordJoueur[1]] == 0:
+        if mMatrice[lCoordJoueur[0]+1, lCoordJoueur[1]] == 0:
             lCoordJoueur[lCoordJoueur[[0] +1, lCoordJoueur[1]]]
 
 #---------------------------------------------------------------------------------------------------------------
@@ -157,12 +156,19 @@ def EnleverWidget():
         item.destroy()
 
 def GetCase(event):
-    lCaseCoord[1][0] = lCaseCoord[0][0]
-    lCaseCoord[1][1] = lCaseCoord[0][1]
-    lCaseCoord[0][0]= int((tkFenetre.winfo_pointerx()-tkFenetre.winfo_rootx())/(ilImageDimension[0]*lScale[0])) 
-    lCaseCoord[0][1]= int((tkFenetre.winfo_pointery()-tkFenetre.winfo_rooty())/(ilImageDimension[1]*lScale[1]))
-    print(str(tkFenetre.winfo_pointerx()-tkFenetre.winfo_rootx()) + ", Y = " + str(tkFenetre.winfo_pointery()-tkFenetre.winfo_rooty()))
-    print(str(lCaseCoord))
+    lTempCaseCoord = [0,0]
+
+    lTempCaseCoord[0]= int((tkFenetre.winfo_pointerx()-tkFenetre.winfo_rootx())/(ilImageDimension[0]*lScale[0])) 
+    lTempCaseCoord[1]= int((tkFenetre.winfo_pointery()-tkFenetre.winfo_rooty())/(ilImageDimension[1]*lScale[1]))
+    
+    if lTempCaseCoord[0] < mMatrice.GetSize()[0] and lTempCaseCoord[1] < mMatrice.GetSize()[1]:
+        mCaseCoord[1][0] = mCaseCoord[0][0]
+        mCaseCoord[1][1] = mCaseCoord[0][1]
+        mCaseCoord[0][0] = lTempCaseCoord[0] 
+        mCaseCoord[0][1] = lTempCaseCoord[1]
+        
+        print(str(tkFenetre.winfo_pointerx()-tkFenetre.winfo_rootx()) + ", Y = " + str(tkFenetre.winfo_pointery()-tkFenetre.winfo_rooty()))
+        print(str(mCaseCoord))
 
 def Resize(event):
     lTempScale = [0,0]
@@ -184,6 +190,10 @@ def Resize(event):
                TkJeu()
            else:
                TkEditeur()
+
+def Point():
+    mMatrice.SetPoint(mCaseCoord[0])
+    TkEditeur()
 
 #---------------------------------------------------------------------------------------------------------------
 #                                           Le Laboratoire
@@ -230,22 +240,32 @@ def AI_Perception(ActorInfo, OtherActorInfo, Range = 5):
         else:                   #x = -1, y = 0
             return 0
 
+def TestPoint():
+    mMatrice.SetPoint(mCaseCoord[0])
+
+    for y in range(mObjetMatrice.GetSize()[1]):
+        for x in range(mObjetMatrice.GetSize()[0]):
+            print("Value Objet : " + str(mObjetMatrice.GetValue([x,y])))
+            mObjetMatrice.DebugDisplay()
+            mObjetMatrice.GetValue([x,y]).destroy()
+
+    TkAfficherMatrice()
+
 #---------------------------------------------------------------------------------------------------------------
 #                                             Programme principale
 #---------------------------------------------------------------------------------------------------------------
 
-global ilImageDimension, lCoordJoueur, cJoueur, iaMatrice, tkCanvas, lCaseCoord, lScale, iState, lDefaultSize
+global ilImageDimension, lCoordJoueur, cJoueur, mMatrice, tkCanvas, mCaseCoord, lScale, iState, lDefaultSize, mObjetMatrice
 
 lDefaultSize = [720, 450]
 lTailleMatrice = [30, 30]
 lCoordJoueur=[0,0, 1]   #[0] coord X, [1] coord Y, [2] Orientation (0 = Up, 1 = Right, 2 = Down, 3 = Left)
 
-lCaseCoord = [[0,0], [0,0]]
+mCaseCoord = [[0,0], [0,0]]
 lScale = [1.0,1.0]
 iState = 0
 
 ilImageDimension = [15, 15]
-
     # Variable de Test
 
 lCoord = [0,0]
@@ -261,15 +281,16 @@ lCoordF = [9,3]
 
     # Fonction en cours de test
 
-iaMatrice = Matrix(lTailleMatrice)
+mMatrice = Matrix(lTailleMatrice)
+mObjetMatrice = Matrix(mMatrice.GetSize())
 
-iaMatrice.SetPoint(lCoord)
+mMatrice.SetPoint(lCoord)
 
-iaMatrice.SetLine(lCoordA, lCoordB)
-iaMatrice.SetLine(lCoordC, lCoordD)
+mMatrice.SetLine(lCoordA, lCoordB)
+mMatrice.SetLine(lCoordC, lCoordD)
 
-iaMatrice.SetRectangle(lCoordE, lCoordF)
+mMatrice.SetRectangle(lCoordE, lCoordF)
 
-iaMatrice.DebugDisplay()
+mMatrice.DebugDisplay()
 
 GUI()
