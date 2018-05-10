@@ -3,8 +3,6 @@ from math import *
 from random import *
 from Matrix import *
 
-global ilImageDimension, lCoordJoueur, cJoueur, iaMatrice, tkCanvas, lCaseCoord, scale, state, defaultSize
-
 #---------------------------------------------------------------------------------------------------------------
 #                                                Core
 #---------------------------------------------------------------------------------------------------------------
@@ -38,7 +36,7 @@ def GUI():
 
     tkFenetre = Tk()
     tkFenetre.title("Labyrinthe")
-    tkFenetre.geometry(str(defaultSize[0])+"x"+str(defaultSize[1]))
+    tkFenetre.geometry(str(lDefaultSize[0])+"x"+str(lDefaultSize[1]))
 
     tkFenetre.bind('<Configure>', Resize) 
 
@@ -51,8 +49,8 @@ def GUI():
 def TkMenuPrincipal():
     print("Menu Principale")
 
-    state = 0
-    EnleverWidget(tkFenetre)
+    iState = 0
+    EnleverWidget()
     
     tkMenuLabel = Label(tkFenetre, text="Labyrinthe")
     PositionRelative(tkFenetre, tkMenuLabel, [0.5, 0.25])
@@ -71,8 +69,8 @@ def TkMenuPrincipal():
 def TkEditeur():
     print("Editeur")
 
-    state = 2
-    EnleverWidget(tkFenetre)
+    iState = 2
+    EnleverWidget()
     
     TkAfficherMatrice()
 
@@ -96,8 +94,8 @@ def TkEditeur():
     # Créer les widgets de la partie jeu {Statut : En Developpement}
 
 def TkJeu():
-    state = 1
-    EnleverWidget(tkFenetre)
+    iState = 1
+    EnleverWidget()
     
     TkAfficherMatrice()
     TkJeuButtonMenu = Button(tkFenetre, text="Retourner au menu", command=lambda:TkMenuPrincipal())
@@ -147,8 +145,8 @@ def PositionRelative(fenetre, widget, coordRelative = [0.5,0.5]):
 
    # Permet de supprimer tout le widget de la fenetre {Statut : Fonctionnel}
 
-def EnleverWidget(tkFenetre):
-    lWidget =tkFenetre.winfo_children()
+def EnleverWidget():
+    lWidget = tkFenetre.winfo_children()
 
     for item in lWidget:
         item.destroy()
@@ -164,25 +162,27 @@ def GetCase(event):
 def Resize(event):
     print("Configure")
 
-    tempScale = [0,0]
-    if defaultSize[0] != 0 and defaultSize[1] != 0:
-       tempScale[0] = tkFenetre.winfo_width()/defaultSize[0]
-       tempScale[1] = tkFenetre.winfo_height()/defaultSize[1]
+    lTempScale = [0,0]
+    if lDefaultSize[0] != 0 and lDefaultSize[1] != 0:
+       lTempScale[0] = tkFenetre.winfo_width()/lDefaultSize[0]
+       lTempScale[1] = tkFenetre.winfo_height()/lDefaultSize[1]
 
-    print("state : " + str(state))
-    print("TempScale : " + str(tempScale))
-    print("scale : " + str(scale))
+    print("state : " + str(iState))
+    print("TempScale : " + str(lTempScale))
+    print("scale : " + str(lScale))
 
-    if tempScale != scale:
+    if lTempScale != lScale:
+        lScale[0] = lTempScale[0]
+        lScale[1] = lTempScale[1]
+        
         # infinite loop hazard
-        if state == 0:
+        
+        if iState == 0:
             TkMenuPrincipal()
-        elif state == 1:
+        elif iState == 1:
             TkJeu()
         else:
             TkEditeur()
-
-        scale = tempScale
 
 #---------------------------------------------------------------------------------------------------------------
 #                                           Le Laboratoire
@@ -233,13 +233,15 @@ def AI_Perception(ActorInfo, OtherActorInfo, Range = 5):
 #                                             Programme principale
 #---------------------------------------------------------------------------------------------------------------
 
-defaultSize = [720, 450]
+global ilImageDimension, lCoordJoueur, cJoueur, iaMatrice, tkCanvas, lCaseCoord, lScale, iState, lDefaultSize
+
+lDefaultSize = [720, 450]
 lTailleMatrice = [30, 30]
 lCoordJoueur=[0,0, 1]   #[0] coord X, [1] coord Y, [2] Orientation (0 = Up, 1 = Right, 2 = Down, 3 = Left)
 
 lCaseCoord = [[0,0], [0,0]]
-scale = [1.0,1.0]
-state = 0
+lScale = [1.0,1.0]
+iState = 0
 
 ilImageDimension = [15, 15]
 
