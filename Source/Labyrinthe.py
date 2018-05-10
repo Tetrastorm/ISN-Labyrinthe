@@ -3,6 +3,8 @@ from math import *
 from random import *
 from Matrix import *
 
+global ilImageDimension, lCoordJoueur, cJoueur, iaMatrice, tkCanvas, lCaseCoord, scale, state, defaultSize
+
 #---------------------------------------------------------------------------------------------------------------
 #                                                Core
 #---------------------------------------------------------------------------------------------------------------
@@ -160,7 +162,7 @@ def GetCase(event):
     print(str(lCaseCoord))
 
 def Resize(event):
-    print("Configurate")
+    print("Configure")
 
     tempScale = [0,0]
     if defaultSize[0] != 0 and defaultSize[1] != 0:
@@ -172,7 +174,7 @@ def Resize(event):
     print("scale : " + str(scale))
 
     if tempScale != scale:
-        # infinite loop
+        # infinite loop hazard
         if state == 0:
             TkMenuPrincipal()
         elif state == 1:
@@ -230,8 +232,6 @@ def AI_Perception(ActorInfo, OtherActorInfo, Range = 5):
 #---------------------------------------------------------------------------------------------------------------
 #                                             Programme principale
 #---------------------------------------------------------------------------------------------------------------
-
-global ilImageDimension, lCoordJoueur, cJoueur, iaMatrice, tkCanvas, lCaseCoord, scale, state, defaultSize
 
 defaultSize = [720, 450]
 lTailleMatrice = [30, 30]
