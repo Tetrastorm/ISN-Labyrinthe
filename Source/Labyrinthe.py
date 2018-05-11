@@ -291,13 +291,6 @@ lCoordF = [9,3]
 mMatrice = Matrix(lTailleMatrice)
 mObjetMatrice = Matrix(mMatrice.GetSize())
 
-mMatrice.SetPoint(lCoord)
-
-mMatrice.SetLine(lCoordA, lCoordB)
-mMatrice.SetLine(lCoordC, lCoordD)
-
-mMatrice.SetRectangle(lCoordE, lCoordF)
-
 mMatrice.DebugDisplay()
 
 GUI()
