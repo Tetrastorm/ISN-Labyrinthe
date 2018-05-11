@@ -273,20 +273,6 @@ lScale = [1.0,1.0]
 iState = 0
 
 ilImageDimension = [15, 15]
-    # Variable de Test
-
-lCoord = [0,0]
-
-lCoordA = [2,2]
-lCoordB = [2,5]
-
-lCoordC = [4,1]
-lCoordD = [8,1]
-
-lCoordE = [5,8]
-lCoordF = [9,3]
-
-    # Fonction en cours de test
 
 mMatrice = Matrix(lTailleMatrice)
 mObjetMatrice = Matrix(mMatrice.GetSize())
