@@ -13,7 +13,8 @@ class Matrix(object):
             fValue = 0
 
         self.iaMatrix = [[fValue], [fValue]]
-    
+        self.mChange = [[0,0],[0.0]]
+
         for y in range(self.lSize[1]):
             self.iaMatrix.append([fValue])
             for x in range(self.lSize[0]):
