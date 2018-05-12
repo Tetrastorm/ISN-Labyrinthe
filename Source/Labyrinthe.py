@@ -3,6 +3,8 @@ from math import *
 from random import *
 from Matrix import *
 
+global ilImageDimension, lCoordJoueur, cJoueur, mMatrice, tkCanvas, mCaseCoord, lScale, iState, lDefaultSize, bCheckResult
+
 #---------------------------------------------------------------------------------------------------------------
 #                                                Core
 #---------------------------------------------------------------------------------------------------------------
@@ -276,8 +278,6 @@ def TestPoint():
 #---------------------------------------------------------------------------------------------------------------
 #                                             Programme principale
 #---------------------------------------------------------------------------------------------------------------
-
-global ilImageDimension, lCoordJoueur, cJoueur, mMatrice, tkCanvas, mCaseCoord, lScale, iState, lDefaultSize, bCheckResult
 
 bCheckResult = True 
 
