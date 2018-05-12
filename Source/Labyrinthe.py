@@ -3,7 +3,7 @@ from math import *
 from random import *
 from Matrix import *
 
-global ilImageDimension, lCoordJoueur, cJoueur, mMatrice, tkCanvas, mCaseCoord, lScale, iState, lDefaultSize, bCheckResult
+global ilImageDimension, lCoordJoueur, cJoueur, mMatrice, tkCanvas, mCaseCoord, lScale, lDefaultSize, iState, bCheckResult
 
 #---------------------------------------------------------------------------------------------------------------
 #                                                Core
@@ -46,9 +46,9 @@ def GUI():
     # Créer les widgets du menus principale {Statut : Fonctionnel}
 
 def TkMenuPrincipal():
-    print("Loading : Menu Principal")
+    print("Menu Principal : Chargement... ")
     iState = 0
-    print(str(iState))
+    print("Menu Principal : iState = " + str(iState))
 
     EnleverWidget()
     
@@ -76,7 +76,7 @@ def TkEditeur():
     print("Editeur : bCheckResult = " + str(bCheckResult))
 
     iState = 2
-    print(str(iState))
+    print("Editeur : iState = " + str(iState))
     EnleverWidget()
     
     TkAfficherMatrice()
@@ -108,7 +108,7 @@ def TkJeu():
 
     iState = 1
 
-    print(str(iState))
+    print("Jeu : iState = " + str(iState))
     EnleverWidget()
     
     TkAfficherMatrice()
