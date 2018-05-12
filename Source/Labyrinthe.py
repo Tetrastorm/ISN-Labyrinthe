@@ -84,7 +84,7 @@ def TkEditeur():
     
     TkAfficherMatrice()
 
-    tkEditeurButtonNouveau=Button(tkFenetre, text="Nouvelle Map")
+    tkEditeurButtonNouveau=Button(tkFenetre, text="Nouvelle Map", command=lambda:Edition(-1))
     PositionRelative(tkEditeurButtonNouveau, [0.80, 0.10])
 
     TkEditeurButtonPoint = Button(tkFenetre, text="Point", command=lambda:Edition(0, bEstAdditif.get()))
@@ -114,6 +114,8 @@ def TkJeu():
     print("Jeu : iState = " + str(iState))
     EnleverWidget()
     
+    RandomLevelGeneration()
+
     TkAfficherMatrice()
     TkJeuButtonMenu = Button(tkFenetre, text="Retourner au menu", command=lambda:TkMenuPrincipal())
     PositionRelative(TkJeuButtonMenu, [0.90, 0.90])
@@ -206,13 +208,16 @@ def Resize(event):
            else:
                TkEditeur()
 
-def Edition(arg, args):
+def Edition(arg, args = False):
     print("args = " + str(args))
 
     bCheckResult = args
     print("CheckResult " + str(bCheckResult))
-
-    if arg == 0:
+    
+    if arg < 0:
+        mMatrice.SetMatrix(0)
+        TkEditeur()
+    elif arg == 0:
         mMatrice.SetPoint(mCaseCoord[0], args)
         TkEditeur()
     elif arg == 1:
@@ -230,53 +235,60 @@ def Edition(arg, args):
 
 def RandomLevelGeneration():
     ## Generation matrice de base
-    # Dimensions
-    xmax = 30
-    ymax = 30
+    ## Dimensions
+    xmax = mMatrice.GetSize()[0]
+    ymax = mMatrice.GetSize()[1]
 
-    # matrice initiale
-    laby=[]                       
-    for i in range (ymax):
-        laby.append([1]*xmax)
-    #print(laby)
-    
-    # Coins fixes
-    laby[0][0]=-1
-    laby[xmax-1][0]=-1
-    laby[0][ymax-1]=-1
-    laby[xmax-1][ymax-1]=-1
-    #laby[2][1]=0
+    ## matrice initiale
+    #laby=[]                       
+    #for i in range (ymax):
+    #    laby.append([1]*xmax)
+    ##print(laby)
 
-    # Dessiner la matrice
-    #print(laby)
-    plt.imshow(laby, cmap='gray', interpolation='None')
-    plt.show()
+    mMatrice.SetMatrix(1)
+
+    ## Coins fixes
+    #laby[0][0] = -1
+    mMatrice.SetValue([0,0],-1)
+    #laby[xmax-1][0] = -1
+    mMatrice.SetValue([xmax-1,0],-1)
+    #laby[0][ymax-1]= -1
+    mMatrice.SetValue([0,ymax-1],-1)
+    #laby[xmax-1][ymax-1] = -1
+    mMatrice.SetValue([xmax-1,ymax-1],-1)
+    ##laby[2][1]=0
+
+    ## Dessiner la matrice
+    ##print(laby)
+    #plt.imshow(laby, cmap='gray', interpolation='None')
+    #plt.show()
 
     ## Preparation de bot
-    # Choix des premières coordonnées de bot
-    #xini=round(xmax/2)
+    ## Choix des premières coordonnées de bot
+    ##xini=round(xmax/2)
     xini=0
     yini=round(ymax/2)
 
-    laby[xini][yini]=0
+    #laby[xini][yini]=0
+    mMatrice.SetValue([xini,yini], 0)
 
     xbot=xini
     ybot=yini
 
-    # Archive des déplacements
+    ## Archive des déplacements
     bot = []
     bot.append([xini,yini])
-    #print(bot)
+    ##print(bot)
 
-    # Passage
+    ## Passage
     continu=1
     step=0
     while continu==1 and step<(xmax*ymax)*10:
         step=step+1
         print(step)
     
-        # choix de pas
-        #al=randint(1,10)
+        ## choix de pas
+        ##al=randint(1,10)
     
         p1 = 25
         p2 = 25
@@ -288,58 +300,68 @@ def RandomLevelGeneration():
         xbotsave=xbot
     
         if al<p1:
-            #gauche
+            ##gauche
             if ybot>1:
                 ybot=ybot-1
         elif al<(p1+p2):
-            #bas
+            ##bas
             xbot=xbot+1
         elif al<p1+p2+p3:
-            #droite
+            ##droite
             ybot=ybot+1
         else:
-            #haut
+            ##haut
             if xbot>1:
                 xbot=xbot-1
     
-        #eviter grandes salles
+        ##eviter grandes salles
         if (xbot<xmax-1) and (ybot<ymax-1):
-            if (laby[xbot+1][ybot]+laby[xbot][ybot+1]+laby[xbot+1][ybot+1]==0): 
-                laby[xbot][ybot]=-1
+            #if (laby[xbot+1][ybot]+laby[xbot][ybot+1]+laby[xbot+1][ybot+1]==0): 
+            if mMatrice.GetValue([xbot+1, ybot]) + mMatrice.GetValue([xbot,ybot+1]) + mMatrice.GetValue([xbot+1,ybot+1]) == 0:
+                #laby[xbot][ybot]=-1
+                mMatrice.SetValue([xbot,ybot],-1)
     
     
         if (xbot>0) and (ybot<ymax-1):
-            if (laby[xbot-1][ybot]+laby[xbot][ybot+1]+laby[xbot-1][ybot+1]==0):
-                laby[xbot][ybot]=-1
+            #if (laby[xbot-1][ybot]+laby[xbot][ybot+1]+laby[xbot-1][ybot+1]==0):
+            if mMatrice.GetValue([xbot-1,ybot]) + mMatrice.GetValue([xbot,ybot+1]) + mMatrice.GetValue([xbot-1,ybot+1]) == 0:
+                #laby[xbot][ybot]=-1
+                mMatrice.SetValue([xbot,ybot],-1)
         
         if (xbot<xmax-1)and(ybot>0):
-            if(laby[xbot+1][ybot]+laby[xbot][ybot-1]+laby[xbot+1][ybot-1]==0):
-                laby[xbot][ybot]=-1
-            
+            #if(laby[xbot+1][ybot]+laby[xbot][ybot-1]+laby[xbot+1][ybot-1]==0):
+            if mMatrice.GetValue([xbot+1,ybot]) + mMatrice.GetValue([xbot,ybot-1]) + mMatrice.GetValue([xbot+1,ybot-1]) == 0:
+                #laby[xbot][ybot]=-1
+                mMatrice.SetValue([xbot,ybot],-1)
+
         if (xbot>0)and(ybot>0):
-            if (laby[xbot-1][ybot]+laby[xbot][ybot-1]+laby[xbot-1][ybot-1]==0):
-                laby[xbot][ybot]=-1
+            #if (laby[xbot-1][ybot]+laby[xbot][ybot-1]+laby[xbot-1][ybot-1]==0):
+            if mMatrice.GetValue([xbot-1,ybot]) + mMatrice.GetValue([xbot,ybot-1]) + mMatrice.GetValue([xbot-1,ybot-1]) == 0:
+                #laby[xbot][ybot]=-1
+                mMatrice.SetValue([xbot,ybot],-1)
     
-        if laby[xbot][ybot]==-1:
+        #if laby[xbot][ybot]==-1:
+        if mMatrice.GetValue([xbot,ybot]):
             ybot=ybotsave
             xbot=xbotsave
         
         bot.append([xbot,ybot])
         print(xbot)
     
-        # Creer passage
-        laby[xbot][ybot]=0
-    
+        ## Creer passage
+        #laby[xbot][ybot]=0
+        mMatrice.SetValue([xbot, ybot], 0)
 
-        # Condition arret
-        if (xbot==xmax-1) or (ybot==ymax-1) or (ybot==0):# or (xbot==0):
+        ## Condition arret
+        if (xbot==xmax-1) or (ybot==ymax-1) or (ybot==0): ## or (xbot==0):
             continu=0
-    laby[xbot][ybot]=3
-    plt.imshow(laby, cmap='gray', interpolation='None')
-    plt.show()
+    #laby[xbot][ybot]=3
+    mMatrice.SetValue([xbot,ybot],3)
+    #plt.imshow(laby, cmap='gray', interpolation='None')
+    #plt.show()
     print(bot)
-
-    #Initialisation de la liste
+    mMatrice.DebugDisplay()
+    ##Initialisation de la liste
     bot=[]
 
 def AI_Perception(ActorInfo, OtherActorInfo, Range = 5):    
