@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from random import *
 from Matrix import *
 
-global ilImageDimension, lCoordJoueur, cJoueur, mMatrice, tkCanvas, mCaseCoord, lScale, lDefaultSize, iState, bCheckResult
+global ilImageDimension, lCoordJoueur, cJoueur, mMatrice, tkCanvas, mCaseCoord, lScale, lDefaultSize, iState, iEditionSet
 
 #---------------------------------------------------------------------------------------------------------------
 #                                                Core
@@ -24,8 +24,13 @@ def TkAfficherMatrice():
                 case = tkCanvas.create_rectangle((x * (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1])), (x * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="lightgreen")
             elif mMatrice.GetValue([x, y]) == 1:
                 case = tkCanvas.create_rectangle((x * (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1])), (x * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="black")
-
-    cJoueur = tkCanvas.create_rectangle((lCoordJoueur[0] * (ilImageDimension[0]*lScale[0])), (lCoordJoueur[1] * (ilImageDimension[1]*lScale[1])), (lCoordJoueur[0] * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (lCoordJoueur[1] * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="turquoise")
+            elif mMatrice.GetValue([x, y]) == 3:
+                cJoueur = tkCanvas.create_rectangle((x * (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1])), (x * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="turquoise")
+                lCoordJoueur = [x,y]
+            elif mMatrice.GetValue([x, y]) == 1:
+                case = tkCanvas.create_rectangle((x * (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1])), (x * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="grey")
+            elif mMatrice.GetValue([x, y]) == 1:
+                case = tkCanvas.create_rectangle((x * (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1])), (x * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="red")
 
 #---------------------------------------------------------------------------------------------------------------
 #                                           Interface Utilisateur
@@ -72,12 +77,6 @@ def TkMenuPrincipal():
 def TkEditeur():
     print("Editeur : Chargement...")
 
-    bEstAdditif = BooleanVar()
-    bEstAdditif.set(bCheckResult)
-    
-    print("Editeur : bEstAdditif = " + str(bEstAdditif.get()))
-    print("Editeur : bCheckResult = " + str(bCheckResult))
-
     iState = 2
     print("Editeur : iState = " + str(iState))
     EnleverWidget()
@@ -87,17 +86,29 @@ def TkEditeur():
     tkEditeurButtonNouveau=Button(tkFenetre, text="Nouvelle Map", command=lambda:Edition(-1))
     PositionRelative(tkEditeurButtonNouveau, [0.80, 0.10])
 
-    TkEditeurButtonPoint = Button(tkFenetre, text="Point", command=lambda:Edition(0, bEstAdditif.get()))
+    TkEditeurButtonPoint = Button(tkFenetre, text="Point", command=lambda:Edition(0))
     PositionRelative(TkEditeurButtonPoint, [0.80, 0.33])
 
-    TkEditeurButtonLigne = Button(tkFenetre, text="Ligne", command=lambda:Edition(1, bEstAdditif.get()))
+    TkEditeurButtonLigne = Button(tkFenetre, text="Ligne", command=lambda:Edition(1))
     PositionRelative(TkEditeurButtonLigne, [0.85, 0.33])
 
-    TkEditeurButtonRectangle = Button(tkFenetre, text="Rectangle", command=lambda:Edition(3, bEstAdditif.get()))
+    TkEditeurButtonRectangle = Button(tkFenetre, text="Rectangle", command=lambda:Edition(3))
     PositionRelative(TkEditeurButtonRectangle, [0.90, 0.33])
 
-    tkEditeurCheckBox = Checkbutton(tkFenetre, text="Additif", variable=bEstAdditif)
-    PositionRelative(tkEditeurCheckBox, [0.85, 0.5])
+    TkEditeurButtonDeplacemnt = Button(tkFenetre, bg="lightgreen", command=lambda:SetEditionSet(0))
+    PositionRelative(TkEditeurButtonDeplacemnt, [0.80, 0.5])
+
+    tkEditeurButtonMur = Button(tkFenetre, bg="black", command=lambda:SetEditionSet(1))
+    PositionRelative(tkEditeurButtonMur, [0.82, 0.5])
+
+    tkEditeurButtonJoueur = Button(tkFenetre, bg="blue", command=lambda:SetEditionSet(2))
+    PositionRelative(tkEditeurButtonJoueur, [0.84, 0.5])
+
+    tkEditeurButtonSortie = Button(tkFenetre, bg="grey", command=lambda:SetEditionSet(3))
+    PositionRelative(tkEditeurButtonSortie, [0.86, 0.5])
+
+    tkEditeurButtonEnnemi = Button(tkFenetre, bg="red", command=lambda:SetEditionSet(4))
+    PositionRelative(tkEditeurButtonEnnemi, [0.88, 0.5])
 
     TkEditeurButtonMenu = Button(tkFenetre, text="Retourner au menu", command=lambda:TkMenuPrincipal())
     PositionRelative(TkEditeurButtonMenu, [0.80, 0.90])
@@ -113,12 +124,14 @@ def TkJeu():
 
     print("Jeu : iState = " + str(iState))
     EnleverWidget()
-    
-    RandomLevelGeneration()
 
     TkAfficherMatrice()
+
     TkJeuButtonMenu = Button(tkFenetre, text="Retourner au menu", command=lambda:TkMenuPrincipal())
-    PositionRelative(TkJeuButtonMenu, [0.90, 0.90])
+    PositionRelative(TkJeuButtonMenu, [0.80, 0.90])
+
+    TkJeuButtonGeneration = Button(tkFenetre, text="Générer une map", command=lambda:Generer())
+    PositionRelative(TkJeuButtonGeneration, [0.8, 0.25])
 
 #---------------------------------------------------------------------------------------------------------------
 #                                                Editeur
@@ -127,9 +140,32 @@ def TkJeu():
 def EditeurEvent():
     tkFenetre.bind('<Button-1>', GetCase)
 
+def Edition(arg):    
+    print("Edition function : iEdition = " + str(iEditionSet))
+    
+    if arg < 0:
+        mMatrice.SetMatrix(0)
+        TkEditeur()
+    elif arg == 0:
+        mMatrice.SetValue(mCaseCoord[0], iEditionSet)
+        TkEditeur()
+    elif arg == 1:
+        mMatrice.SetLine(mCaseCoord[0], mCaseCoord[1], iEditionSet)
+        TkEditeur()
+    else:
+        mMatrice.SetRectangle(mCaseCoord[0], mCaseCoord[1], iEditionSet)
+        TkEditeur()
+
+def SetEditionSet(iValue):
+    iEditionSet = iValue
+    print("SetEditionSet function : iEditionSet = " + str(iEditionSet))
 #---------------------------------------------------------------------------------------------------------------
 #                                                 Jeu
 #---------------------------------------------------------------------------------------------------------------
+
+def Generer():
+    RandomLevelGeneration()
+    TkJeu()
 
     # Gère les déplacemnts du joueur {Statut : En Developpement}
 
@@ -207,25 +243,6 @@ def Resize(event):
                TkJeu()
            else:
                TkEditeur()
-
-def Edition(arg, args = False):
-    print("args = " + str(args))
-
-    bCheckResult = args
-    print("CheckResult " + str(bCheckResult))
-    
-    if arg < 0:
-        mMatrice.SetMatrix(0)
-        TkEditeur()
-    elif arg == 0:
-        mMatrice.SetPoint(mCaseCoord[0], args)
-        TkEditeur()
-    elif arg == 1:
-        mMatrice.SetLine(mCaseCoord[0], mCaseCoord[1], args)
-        TkEditeur()
-    else:
-        mMatrice.SetRectangle(mCaseCoord[0], mCaseCoord[1], args)
-        TkEditeur()
 
 #---------------------------------------------------------------------------------------------------------------
 #                                           Le Laboratoire
@@ -393,7 +410,7 @@ def TestPoint():
 #                                             Programme principale
 #---------------------------------------------------------------------------------------------------------------
 
-bCheckResult = True 
+iEditionSet = 0 
 
 lDefaultSize = [720, 450]
 lTailleMatrice = [30, 30]

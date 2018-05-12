@@ -61,13 +61,7 @@ class Matrix(object):
 
     # Edition tools
 
-    def SetPoint(self, lCoord, bIsAdditive = True):
-        if bIsAdditive:
-            self.SetValue(lCoord, 1)
-        else:
-            self.SetValue(lCoord, 0)
-
-    def SetLine(self, lCoordA, lCoordB, bIsAdditive = True):        
+    def SetLine(self, lCoordA, lCoordB, iValue = 0):        
         lTempCoord = [0,0]
 
         if lCoordA[0] == lCoordB[0]:
@@ -76,11 +70,11 @@ class Matrix(object):
             if lCoordA[1] > lCoordB[1]:
                 for i in range(lCoordB[1], (lCoordA[1] + 1)):
                     lTempCoord[1] = i
-                    self.SetPoint(lTempCoord, bIsAdditive)
+                    self.SetValue(lTempCoord, iValue)
             else:
                 for i in range(lCoordA[1], (lCoordB[1] + 1)):
                     lTempCoord[1] = i
-                    self.SetPoint(lTempCoord, bIsAdditive)
+                    self.SetValue(lTempCoord, iValue)
 
         elif lCoordA[1] == lCoordB[1]:
             lTempCoord[1] = lCoordA[1]
@@ -88,19 +82,19 @@ class Matrix(object):
             if lCoordA[0] > lCoordB[0]:
                 for i in range(lCoordB[0], (lCoordA[0] + 1)):
                     lTempCoord[0] = i
-                    self.SetPoint(lTempCoord, bIsAdditive)
+                    self.SetValue(lTempCoord, iValue)
             else:
                 for i in range(lCoordA[0], (lCoordB[0] + 1)):
                     lTempCoord[0] = i
-                    self.SetPoint(lTempCoord, bIsAdditive)
+                    self.SetValue(lTempCoord, iValue)
         else:
             print("Erreur : La Ligne n'est pas verticale ou horizontale")
 
-    def SetRectangle(self, lCoordA, lCoordB, bIsAdditive = True):
+    def SetRectangle(self, lCoordA, lCoordB, iValue = 0):
         lTempCoord = [lCoordA[0], lCoordB[1]]
-        self.SetLine(lCoordA, lTempCoord, bIsAdditive)
-        self.SetLine(lCoordB, lTempCoord, bIsAdditive)
+        self.SetLine(lCoordA, lTempCoord, iValue)
+        self.SetLine(lCoordB, lTempCoord, iValue)
 
         lTempCoord = [lCoordB[0], lCoordA[1]]     
-        self.SetLine(lCoordA, lTempCoord, bIsAdditive)
-        self.SetLine(lTempCoord, lCoordB, bIsAdditive)
+        self.SetLine(lCoordA, lTempCoord, iValue)
+        self.SetLine(lTempCoord, lCoordB, iValue)
