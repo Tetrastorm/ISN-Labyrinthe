@@ -1,6 +1,9 @@
 from tkinter import *
 from math import *
 from random import *
+import matplotlib
+import matplotlib.pyplot as plt
+from random import *
 from Matrix import *
 
 global ilImageDimension, lCoordJoueur, cJoueur, mMatrice, tkCanvas, mCaseCoord, lScale, lDefaultSize, iState, bCheckResult
@@ -226,29 +229,118 @@ def Edition(arg, args):
 # Generation de niveau aleatoirement {Statut : En Developpemnt}
 
 def RandomLevelGeneration():
-    x = int(input("Largeur:  "))  
-    y = int(input("Hauteur:  "))       
-    labyrinthe = generer(x, y)                 
- 
-    listelignes = []                           
-    while len(labyrinthe) != 0:                 
-        ligne = []                              
-        for i in range (0,x):
-            ligne.append(labyrinthe[0])         
-            labyrinthe.pop(0)
-        listeLignes.append(ligne)
-    print(listelignes)                
+    ## Generation matrice de base
+    # Dimensions
+    xmax = 30
+    ymax = 30
 
-def Generer(x, y):
-    base= []                          
-    for i in range(0, x * y):               
-        rand = randint(0, 2)
-        if rand==0:
-            valeurcase=1
+    # matrice initiale
+    laby=[]                       
+    for i in range (ymax):
+        laby.append([1]*xmax)
+    #print(laby)
+    
+    # Coins fixes
+    laby[0][0]=-1
+    laby[xmax-1][0]=-1
+    laby[0][ymax-1]=-1
+    laby[xmax-1][ymax-1]=-1
+    #laby[2][1]=0
+
+    # Dessiner la matrice
+    #print(laby)
+    plt.imshow(laby, cmap='gray', interpolation='None')
+    plt.show()
+
+    ## Preparation de bot
+    # Choix des premières coordonnées de bot
+    #xini=round(xmax/2)
+    xini=0
+    yini=round(ymax/2)
+
+    laby[xini][yini]=0
+
+    xbot=xini
+    ybot=yini
+
+    # Archive des déplacements
+    bot = []
+    bot.append([xini,yini])
+    #print(bot)
+
+    # Passage
+    continu=1
+    step=0
+    while continu==1 and step<(xmax*ymax)*10:
+        step=step+1
+        print(step)
+    
+        # choix de pas
+        #al=randint(1,10)
+    
+        p1 = 25
+        p2 = 25
+        p3 = 25
+        p4 = 100-p1-p2-p3
+    
+        al=random()*100
+        ybotsave=ybot
+        xbotsave=xbot
+    
+        if al<p1:
+            #gauche
+            if ybot>1:
+                ybot=ybot-1
+        elif al<(p1+p2):
+            #bas
+            xbot=xbot+1
+        elif al<p1+p2+p3:
+            #droite
+            ybot=ybot+1
         else:
-            valeurcase=0
-        base.append(valeurcase)              
-    return base
+            #haut
+            if xbot>1:
+                xbot=xbot-1
+    
+        #eviter grandes salles
+        if (xbot<xmax-1) and (ybot<ymax-1):
+            if (laby[xbot+1][ybot]+laby[xbot][ybot+1]+laby[xbot+1][ybot+1]==0): 
+                laby[xbot][ybot]=-1
+    
+    
+        if (xbot>0) and (ybot<ymax-1):
+            if (laby[xbot-1][ybot]+laby[xbot][ybot+1]+laby[xbot-1][ybot+1]==0):
+                laby[xbot][ybot]=-1
+        
+        if (xbot<xmax-1)and(ybot>0):
+            if(laby[xbot+1][ybot]+laby[xbot][ybot-1]+laby[xbot+1][ybot-1]==0):
+                laby[xbot][ybot]=-1
+            
+        if (xbot>0)and(ybot>0):
+            if (laby[xbot-1][ybot]+laby[xbot][ybot-1]+laby[xbot-1][ybot-1]==0):
+                laby[xbot][ybot]=-1
+    
+        if laby[xbot][ybot]==-1:
+            ybot=ybotsave
+            xbot=xbotsave
+        
+        bot.append([xbot,ybot])
+        print(xbot)
+    
+        # Creer passage
+        laby[xbot][ybot]=0
+    
+
+        # Condition arret
+        if (xbot==xmax-1) or (ybot==ymax-1) or (ybot==0):# or (xbot==0):
+            continu=0
+    laby[xbot][ybot]=3
+    plt.imshow(laby, cmap='gray', interpolation='None')
+    plt.show()
+    print(bot)
+
+    #Initialisation de la liste
+    bot=[]
 
 def AI_Perception(ActorInfo, OtherActorInfo, Range = 5):    
     if sqrt((OtherActorInfo[0] - ActorInfo[0])^2, (OtherActorInfo[1] - ActorInfo[1])^2) <= Range:
