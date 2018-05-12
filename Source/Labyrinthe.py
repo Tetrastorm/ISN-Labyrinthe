@@ -35,7 +35,7 @@ def GUI():
     tkFenetre.title("Labyrinthe")
     tkFenetre.geometry(str(lDefaultSize[0])+"x"+str(lDefaultSize[1]))
 
-    tkFenetre.bind('<Configure>', Resize) 
+    tkFenetre.bind('<Configure>', Resize)
 
     TkMenuPrincipal()   
 
@@ -65,10 +65,13 @@ def TkMenuPrincipal():
     # Créer les widgets de l'editeur de niveau {Statut : En Developpement}
 
 def TkEditeur():
-    print("Loading : Editeur")
+    print("Editeur : Chargement...")
 
     bEstAdditif = BooleanVar()
     bEstAdditif.set(bCheckResult)
+    
+    print("Editeur : bEstAdditif = " + str(bEstAdditif.get()))
+    print("Editeur : bCheckResult = " + str(bCheckResult))
 
     iState = 2
     print(str(iState))
@@ -99,7 +102,7 @@ def TkEditeur():
     # Créer les widgets de la partie jeu {Statut : En Developpement}
 
 def TkJeu():
-    print("Loading : Jeu")
+    print("Jeu : Chargement...")
 
     iState = 1
 
@@ -153,7 +156,8 @@ def PositionRelative(widget, coordRelative = [0.5,0.5]):
         widget.place(x = Coord[0], y = Coord[1])
     else:
         print("Erreur : Les coordonnée relative de " + str(widget) + " a au moins un de ses valeurs pas compris dans l'intervalle [0,1]")
-   # Permet de supprimer tout le widget de la fenetre {Statut : Fonctionnel}
+   
+    # Permet de supprimer tout le widget de la fenetre {Statut : Fonctionnel}
 
 def EnleverWidget():
     lWidget = tkFenetre.winfo_children()
@@ -202,6 +206,7 @@ def Edition(arg, args):
 
     bCheckResult = args
     print("CheckResult " + str(bCheckResult))
+
     if arg == 0:
         mMatrice.SetPoint(mCaseCoord[0], args)
         TkEditeur()
@@ -272,7 +277,7 @@ def TestPoint():
 #                                             Programme principale
 #---------------------------------------------------------------------------------------------------------------
 
-global ilImageDimension, lCoordJoueur, cJoueur, mMatrice, tkCanvas, mCaseCoord, lScale, iState, lDefaultSize, mObjetMatrice, CheckResult
+global ilImageDimension, lCoordJoueur, cJoueur, mMatrice, tkCanvas, mCaseCoord, lScale, iState, lDefaultSize, bCheckResult
 
 bCheckResult = True 
 
