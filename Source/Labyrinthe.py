@@ -272,7 +272,7 @@ def TestPoint():
 #                                             Programme principale
 #---------------------------------------------------------------------------------------------------------------
 
-global ilImageDimension, lCoordJoueur, cJoueur, mMatrice, tkCanvas, mCaseCoord, lScale, iState, lDefaultSize, mObjetMatrice, CheckResult
+global ilImageDimension, lCoordJoueur, cJoueur, mMatrice, tkCanvas, mCaseCoord, lScale, iState, lDefaultSize, mObjetMatrice, bCheckResult
 
 bCheckResult = True 
 
