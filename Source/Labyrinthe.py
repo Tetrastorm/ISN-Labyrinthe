@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from random import *
 from Matrix import *
 
-global ilImageDimension, lCoordJoueur, cJoueur, mMatrice, tkCanvas, mCaseCoord, lScale, lDefaultSize, iState, iEditionSet
+global ilImageDimension, lCoordJoueur, cJoueur, mMatrice, tkCanvas, mCaseCoord, lScale, lDefaultSize
 
 #---------------------------------------------------------------------------------------------------------------
 #                                                Core
@@ -24,12 +24,12 @@ def TkAfficherMatrice():
                 case = tkCanvas.create_rectangle((x * (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1])), (x * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="lightgreen")
             elif mMatrice.GetValue([x, y]) == 1:
                 case = tkCanvas.create_rectangle((x * (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1])), (x * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="black")
-            elif mMatrice.GetValue([x, y]) == 3:
+            elif mMatrice.GetValue([x, y]) == 2:
                 cJoueur = tkCanvas.create_rectangle((x * (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1])), (x * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="turquoise")
                 lCoordJoueur = [x,y]
-            elif mMatrice.GetValue([x, y]) == 1:
+            elif mMatrice.GetValue([x, y]) == 3:
                 case = tkCanvas.create_rectangle((x * (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1])), (x * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="grey")
-            elif mMatrice.GetValue([x, y]) == 1:
+            elif mMatrice.GetValue([x, y]) == 4:
                 case = tkCanvas.create_rectangle((x * (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1])), (x * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="red")
 
 #---------------------------------------------------------------------------------------------------------------
@@ -55,7 +55,7 @@ def GUI():
 
 def TkMenuPrincipal():
     print("Menu Principal : Chargement... ")
-    iState = 0
+    SetState(0)
     print("Menu Principal : iState = " + str(iState))
 
     EnleverWidget()
@@ -77,7 +77,7 @@ def TkMenuPrincipal():
 def TkEditeur():
     print("Editeur : Chargement...")
 
-    iState = 2
+    SetState(2)
     print("Editeur : iState = " + str(iState))
     EnleverWidget()
     
@@ -120,8 +120,7 @@ def TkEditeur():
 def TkJeu():
     print("Jeu : Chargement...")
 
-    iState = 1
-
+    SetState(1)
     print("Jeu : iState = " + str(iState))
     EnleverWidget()
 
@@ -156,9 +155,6 @@ def Edition(arg):
         mMatrice.SetRectangle(mCaseCoord[0], mCaseCoord[1], iEditionSet)
         TkEditeur()
 
-def SetEditionSet(iValue):
-    iEditionSet = iValue
-    print("SetEditionSet function : iEditionSet = " + str(iEditionSet))
 #---------------------------------------------------------------------------------------------------------------
 #                                                 Jeu
 #---------------------------------------------------------------------------------------------------------------
@@ -243,6 +239,15 @@ def Resize(event):
                TkJeu()
            else:
                TkEditeur()
+
+def SetEditionSet(iValue):
+    global iEditionSet
+    iEditionSet = iValue
+    print("SetEditionSet function : iEditionSet = " + str(iEditionSet))
+
+def SetState(iValue):
+    global iState
+    iState = iValue
 
 #---------------------------------------------------------------------------------------------------------------
 #                                           Le Laboratoire
