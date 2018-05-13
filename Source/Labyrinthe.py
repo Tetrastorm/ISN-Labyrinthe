@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from random import *
 from Matrix import *
 
-global ilImageDimension, lCoordJoueur, cJoueur, mMatrice, tkCanvas, mCaseCoord, lScale, lDefaultSize
+global ilImageDimension, lCoordJoueur, cJoueur, mMatrice, mCaseCoord, lScale, lDefaultSize
 
 #---------------------------------------------------------------------------------------------------------------
 #                                                Core
@@ -25,7 +25,7 @@ def TkAfficherMatrice():
             elif mMatrice.GetValue([x, y]) == 1:
                 case = tkCanvas.create_rectangle((x * (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1])), (x * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="black")
             elif mMatrice.GetValue([x, y]) == 2:
-                cJoueur = tkCanvas.create_rectangle((x * (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1])), (x * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="turquoise")
+                cJoueur = tkCanvas.create_rectangle((x * (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1])), (x * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="blue")
                 lCoordJoueur = [x,y]
             elif mMatrice.GetValue([x, y]) == 3:
                 case = tkCanvas.create_rectangle((x * (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1])), (x * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="grey")
@@ -399,17 +399,6 @@ def AI_Perception(ActorInfo, OtherActorInfo, Range = 5):
             return 0
         else:                   #x = -1, y = 0
             return 0
-
-def TestPoint():
-    mMatrice.SetPoint(mCaseCoord[0])
-
-    for y in range(mObjetMatrice.GetSize()[1]):
-        for x in range(mObjetMatrice.GetSize()[0]):
-            print("Value Objet : " + str(mObjetMatrice.GetValue([x,y])))
-            mObjetMatrice.DebugDisplay()
-            mObjetMatrice.GetValue([x,y]).destroy()
-
-    TkAfficherMatrice()
 
 #---------------------------------------------------------------------------------------------------------------
 #                                             Programme principale
