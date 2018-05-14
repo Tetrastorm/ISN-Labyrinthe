@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from random import *
 from Matrix import *
 
-global ilImageDimension, lCoordJoueur, cJoueur, mMatrice, mCaseCoord, lScale, lDefaultSize
+global ilImageDimension, mMatrice, mCaseCoord, lScale, lDefaultSize
 
 #---------------------------------------------------------------------------------------------------------------
 #                                                Core
@@ -15,6 +15,8 @@ global ilImageDimension, lCoordJoueur, cJoueur, mMatrice, mCaseCoord, lScale, lD
     # Affiche dans tkinter la matrice niveau {Statut : En fonctionnel / à Optimiser}
 
 def TkAfficherMatrice():
+    global lCoordJoueur, cJoueur
+    
     tkCanvas=Canvas(tkFenetre)
     tkCanvas.pack(fill=BOTH, expand=1)
 
@@ -68,6 +70,9 @@ def TkMenuPrincipal():
 
     tkMenuButtonCreer = Button(tkFenetre, text="Créer", command=lambda:TkEditeur())
     PositionRelative(tkMenuButtonCreer, [0.5, 0.55])
+
+    tkMenuButtonOption = Button(tkFenetre, text="Option", command=lambda:Option())
+    PositionRelative(tkMenuButtonOption, [0.5, 60])
 
     tkMenuButtonQuitter = Button(tkFenetre, text="Quitter", command=tkFenetre.destroy)
     PositionRelative(tkMenuButtonQuitter, [0.5, 0.65])
@@ -182,6 +187,15 @@ def Deplacement(event):
         if mMatrice[lCoordJoueur[0]+1, lCoordJoueur[1]] == 0:
             lCoordJoueur[lCoordJoueur[[0] +1, lCoordJoueur[1]]]
 
+#---------------------------------------------------------------------------------------------------------------
+#                                                 Option
+#---------------------------------------------------------------------------------------------------------------
+
+def Option():
+    EnleverWidget()
+
+    tkOptionButtonRetour = Button(tkFenetre, text="Retourner au Menu", command=lambda:TkMenuPrincipal())
+    PositionRelative(, [])
 #---------------------------------------------------------------------------------------------------------------
 #                                                 Outils
 #---------------------------------------------------------------------------------------------------------------
