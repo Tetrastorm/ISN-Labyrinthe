@@ -71,8 +71,8 @@ def TkMenuPrincipal():
     tkMenuButtonCreer = Button(tkFenetre, text="Créer", command=lambda:TkEditeur())
     PositionRelative(tkMenuButtonCreer, [0.5, 0.55])
 
-    tkMenuButtonOption = Button(tkFenetre, text="Option", command=lambda:Option())
-    PositionRelative(tkMenuButtonOption, [0.5, 60])
+    tkMenuButtonOption = Button(tkFenetre, text="Option", command=lambda:TkOption())
+    PositionRelative(tkMenuButtonOption, [0.5, 0.60])
 
     tkMenuButtonQuitter = Button(tkFenetre, text="Quitter", command=tkFenetre.destroy)
     PositionRelative(tkMenuButtonQuitter, [0.5, 0.65])
@@ -137,6 +137,14 @@ def TkJeu():
     TkJeuButtonGeneration = Button(tkFenetre, text="Générer une map", command=lambda:Generer())
     PositionRelative(TkJeuButtonGeneration, [0.8, 0.25])
 
+def TkOption():
+    EnleverWidget()
+
+    Fullsceen()
+
+    tkOptionButtonMenu = Button(tkFenetre, text="Retourner au Menu", command=lambda:TkMenuPrincipal())
+    PositionRelative(tkOptionButtonMenu, [0.80,0.90])
+
 #---------------------------------------------------------------------------------------------------------------
 #                                                Editeur
 #---------------------------------------------------------------------------------------------------------------
@@ -191,11 +199,10 @@ def Deplacement(event):
 #                                                 Option
 #---------------------------------------------------------------------------------------------------------------
 
-def Option():
-    EnleverWidget()
+def Fullsceen():
+    tkFenetre.attributes("-fullscreen", True)
+    print(str(tkFenetre.getboolean("-fullsceen")))
 
-    tkOptionButtonRetour = Button(tkFenetre, text="Retourner au Menu", command=lambda:TkMenuPrincipal())
-    PositionRelative(, [])
 #---------------------------------------------------------------------------------------------------------------
 #                                                 Outils
 #---------------------------------------------------------------------------------------------------------------
@@ -251,8 +258,10 @@ def Resize(event):
                TkMenuPrincipal()
            elif iState == 1:
                TkJeu()
-           else:
+           elif iState == 2:
                TkEditeur()
+           elif iState == 3:
+               TkOption()
 
 def SetEditionSet(iValue):
     global iEditionSet
