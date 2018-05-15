@@ -194,14 +194,14 @@ def Deplacement(event, args):
             mMatrice.SetValue(lCoordJoueur, 0)
             lCoordJoueur[1]=lCoordJoueur[1]+1
             mMatrice.SetValue(lCoordJoueur, 2)
-            tkCanvas.move(canJoueur, 0, ilImageDimension[0]*lScale[0])
+            tkCanvas.move(canJoueur, 0, ilImageDimension[1]*lScale[1])
     elif args == 1 :
         print("Deplacement : Bas")
         if mMatrice.GetValue([lCoordJoueur[0], lCoordJoueur[1]-1]) == 0:
             mMatrice.SetValue(lCoordJoueur, 0)
             lCoordJoueur[1]=lCoordJoueur[1]-1
             mMatrice.SetValue(lCoordJoueur, 2)
-            tkCanvas.move(canJoueur, 0, -ilImageDimension[0]*lScale[0])
+            tkCanvas.move(canJoueur, 0, -ilImageDimension[1]*lScale[1])
     elif args == 2 :
         print("Deplacement : Gauche")
         if mMatrice.GetValue([lCoordJoueur[0]-1, lCoordJoueur[1]]) == 0:
