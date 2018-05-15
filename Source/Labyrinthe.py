@@ -15,7 +15,7 @@ global ilImageDimension, mMatrice, mCaseCoord, lScale, lDefaultSize
     # Affiche dans tkinter la matrice niveau {Statut : En fonctionnel / à Optimiser}
 
 def TkAfficherMatrice():
-    global lCoordJoueur, cJoueur
+    global lCoordJoueur, canJoueur
     
     tkCanvas=Canvas(tkFenetre)
     tkCanvas.pack(fill=BOTH, expand=1)
@@ -23,16 +23,17 @@ def TkAfficherMatrice():
     for y in range(mMatrice.GetSize()[0]):
         for x in range(mMatrice.GetSize()[1]):
             if mMatrice.GetValue([x,y]) == 0:
-                case = tkCanvas.create_rectangle((x * (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1])), (x * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="lightgreen")
+                tkCanvas.create_rectangle((x * (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1])), (x * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="lightgreen")
             elif mMatrice.GetValue([x, y]) == 1:
-                case = tkCanvas.create_rectangle((x * (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1])), (x * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="black")
+                tkCanvas.create_rectangle((x * (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1])), (x * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="black")
             elif mMatrice.GetValue([x, y]) == 2:
-                cJoueur = tkCanvas.create_rectangle((x * (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1])), (x * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="blue")
+                canJoueur = tkCanvas.create_rectangle((x * (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1])), (x * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="blue")
                 lCoordJoueur = [x,y]
+                print(str(canJoueur))
             elif mMatrice.GetValue([x, y]) == 3:
-                case = tkCanvas.create_rectangle((x * (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1])), (x * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="grey")
+                tkCanvas.create_rectangle((x * (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1])), (x * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="grey")
             elif mMatrice.GetValue([x, y]) == 4:
-                case = tkCanvas.create_rectangle((x * (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1])), (x * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="red")
+                tkCanvas.create_rectangle((x * (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1])), (x * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="red")
 
 #---------------------------------------------------------------------------------------------------------------
 #                                           Interface Utilisateur
@@ -65,13 +66,13 @@ def TkMenuPrincipal():
     tkMenuLabel = Label(tkFenetre, text="Labyrinthe")
     PositionRelative(tkMenuLabel, [0.5, 0.25])
 
-    tkMenuButtonJouer = Button(tkFenetre, text="Jouer", command=lambda:TkJeu())
+    tkMenuButtonJouer = Button(tkFenetre, text="Jouer", command=TkJeu)
     PositionRelative(tkMenuButtonJouer, [0.5, 0.45])
 
-    tkMenuButtonCreer = Button(tkFenetre, text="Créer", command=lambda:TkEditeur())
+    tkMenuButtonCreer = Button(tkFenetre, text="Créer", command=TkEditeur)
     PositionRelative(tkMenuButtonCreer, [0.5, 0.55])
 
-    tkMenuButtonOption = Button(tkFenetre, text="Option", command=lambda:TkOption())
+    tkMenuButtonOption = Button(tkFenetre, text="Option", command=TkOption)
     PositionRelative(tkMenuButtonOption, [0.5, 0.60])
 
     tkMenuButtonQuitter = Button(tkFenetre, text="Quitter", command=tkFenetre.destroy)
@@ -115,7 +116,7 @@ def TkEditeur():
     tkEditeurButtonEnnemi = Button(tkFenetre, bg="red", command=lambda:SetEditionSet(4))
     PositionRelative(tkEditeurButtonEnnemi, [0.88, 0.5])
 
-    TkEditeurButtonMenu = Button(tkFenetre, text="Retourner au menu", command=lambda:TkMenuPrincipal())
+    TkEditeurButtonMenu = Button(tkFenetre, text="Retourner au menu", command=TkMenuPrincipal)
     PositionRelative(TkEditeurButtonMenu, [0.80, 0.90])
 
     EditeurEvent()
@@ -130,11 +131,12 @@ def TkJeu():
     EnleverWidget()
 
     TkAfficherMatrice()
+    event()
 
-    TkJeuButtonMenu = Button(tkFenetre, text="Retourner au menu", command=lambda:TkMenuPrincipal())
+    TkJeuButtonMenu = Button(tkFenetre, text="Retourner au menu", command=TkMenuPrincipal)
     PositionRelative(TkJeuButtonMenu, [0.80, 0.90])
 
-    TkJeuButtonGeneration = Button(tkFenetre, text="Générer une map", command=lambda:Generer())
+    TkJeuButtonGeneration = Button(tkFenetre, text="Générer une map", command=Generer)
     PositionRelative(TkJeuButtonGeneration, [0.8, 0.25])
 
 def TkOption():
@@ -142,7 +144,7 @@ def TkOption():
 
     Fullsceen()
 
-    tkOptionButtonMenu = Button(tkFenetre, text="Retourner au Menu", command=lambda:TkMenuPrincipal())
+    tkOptionButtonMenu = Button(tkFenetre, text="Retourner au Menu", command=TkMenuPrincipal)
     PositionRelative(tkOptionButtonMenu, [0.80,0.90])
 
 #---------------------------------------------------------------------------------------------------------------
@@ -178,22 +180,29 @@ def Generer():
 
     # Gère les déplacemnts du joueur {Statut : En Developpement}
 
-def Deplacement(event): 
-    if tkFenetre.bind("<Up>,haut"):
-        if mMatrice[lCoordJoueur[0], lCoordJoueur[1]+1] == 0:
-            lCoordJoueur[lCoordJoueur[0], lCoordJoueur[1]+1]
-            
-    elif tkFenetre.bind("<Down>,bas"):
-        if mMatrice[lCoordJoueur[0], lCoordJoueur[1]-1]==0:
-            lCoordJoueur[lCoordJoueur[0], lCoordJoueur[1]-1]
-            
-    elif tkFenetre.bind("<Left>,gauche"):
-        if mMatrice[lCoordJoueur[0]-1, lCoordJoueur[1]]==0:
-            lCoordJoueur[lCoordJoueur[[0] -1, lCoordJoueur[1]]]
-            
-    elif tkFenetre.bind("<Right>,droite"):
-        if mMatrice[lCoordJoueur[0]+1, lCoordJoueur[1]] == 0:
-            lCoordJoueur[lCoordJoueur[[0] +1, lCoordJoueur[1]]]
+def event():
+    tkFenetre.bind("<Up>", Deplacement(event,0))
+    tkFenetre.bind("<Down>", Deplacement(event,1))
+    tkFenetre.bind("<Right>", Deplacement(event,2))
+    tkFenetre.bind("<Left>", Deplacement(event,3))
+
+def Deplacement(event, args): 
+    if args == 0 :
+        if mMatrice.GetValue([lCoordJoueur[0], lCoordJoueur[1]+1]) == 0:
+            lCoordJoueur[1]=lCoordJoueur[1]+1
+    elif args == 1 :
+        if mMatrice.GetValue([lCoordJoueur[0], lCoordJoueur[1]-1]) == 0:
+            lCoordJoueur[1]=lCoordJoueur[1]-1
+    elif args == 2 :
+        if mMatrice.GetValue([lCoordJoueur[0]-1, lCoordJoueur[1]]) == 0:
+            lCoordJoueur[0]=lCoordJoueur[0]-1
+    elif args == 3 :
+        if mMatrice.GetValue([lCoordJoueur[0]+1, lCoordJoueur[1]]) == 0:
+            lCoordJoueur[0]=lCoordJoueur[0] +1
+    
+    print(str(canJoueur))
+    print("New CoordX = " + str(lCoordJoueur[0]*ilImageDimension[0]*lScale[0]) + ", New CoordY = " + str(lCoordJoueur[1]*ilImageDimension[0]*lScale[0]))
+    canJoueur.move(lCoordJoueur[0]*ilImageDimension[0]*lScale[0], lCoordJoueur[1]*ilImageDimension[0]*lScale[0])
 
 #---------------------------------------------------------------------------------------------------------------
 #                                                 Option
@@ -364,35 +373,37 @@ def RandomLevelGeneration():
             #if (laby[xbot+1][ybot]+laby[xbot][ybot+1]+laby[xbot+1][ybot+1]==0): 
             if mMatrice.GetValue([xbot+1, ybot]) + mMatrice.GetValue([xbot,ybot+1]) + mMatrice.GetValue([xbot+1,ybot+1]) == 0:
                 #laby[xbot][ybot]=-1
-                mMatrice.SetValue([xbot,ybot],-1)
+                mMatrice.SetValue([xbot,ybot],2)
     
     
         if (xbot>0) and (ybot<ymax-1):
             #if (laby[xbot-1][ybot]+laby[xbot][ybot+1]+laby[xbot-1][ybot+1]==0):
             if mMatrice.GetValue([xbot-1,ybot]) + mMatrice.GetValue([xbot,ybot+1]) + mMatrice.GetValue([xbot-1,ybot+1]) == 0:
                 #laby[xbot][ybot]=-1
-                mMatrice.SetValue([xbot,ybot],-1)
+                mMatrice.SetValue([xbot,ybot],2)
         
         if (xbot<xmax-1)and(ybot>0):
             #if(laby[xbot+1][ybot]+laby[xbot][ybot-1]+laby[xbot+1][ybot-1]==0):
             if mMatrice.GetValue([xbot+1,ybot]) + mMatrice.GetValue([xbot,ybot-1]) + mMatrice.GetValue([xbot+1,ybot-1]) == 0:
                 #laby[xbot][ybot]=-1
-                mMatrice.SetValue([xbot,ybot],-1)
+                mMatrice.SetValue([xbot,ybot],2)
 
         if (xbot>0)and(ybot>0):
             #if (laby[xbot-1][ybot]+laby[xbot][ybot-1]+laby[xbot-1][ybot-1]==0):
             if mMatrice.GetValue([xbot-1,ybot]) + mMatrice.GetValue([xbot,ybot-1]) + mMatrice.GetValue([xbot-1,ybot-1]) == 0:
                 #laby[xbot][ybot]=-1
-                mMatrice.SetValue([xbot,ybot],-1)
+                mMatrice.SetValue([xbot,ybot],2)
     
         #if laby[xbot][ybot]==-1:
-        if mMatrice.GetValue([xbot,ybot]):
+        if mMatrice.GetValue([xbot,ybot])==2:
             ybot=ybotsave
             xbot=xbotsave
         
         bot.append([xbot,ybot])
         print(xbot)
     
+        mMatrice.Switch(2, 1)
+
         ## Creer passage
         #laby[xbot][ybot]=0
         mMatrice.SetValue([xbot, ybot], 0)

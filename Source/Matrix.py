@@ -48,6 +48,12 @@ class Matrix(object):
             for x in range(self.lSize[0]):
                 self.SetValue([x,y], iValue)
     
+    def Switch(self, a, b):
+        for y in range(self.lSize[1]):
+            for x in range(self.lSize[0]):
+                if self.iaMatrix[x][y] == a:
+                    self.iaMatrix[x][y] = b
+
     # Debug Function
 
     def DebugDisplay(self):
