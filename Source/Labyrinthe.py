@@ -27,6 +27,7 @@ def TkAfficherMatrice():
             elif mMatrice.GetValue([x, y]) == 1:
                 tkCanvas.create_rectangle((x * (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1])), (x * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="black")
             elif mMatrice.GetValue([x, y]) == 2:
+                tkCanvas.create_rectangle((x * (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1])), (x * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="lightgreen")
                 canJoueur = tkCanvas.create_rectangle((x * (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1])), (x * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="blue")
                 lCoordJoueur = [x,y]
                 print(str(canJoueur))
@@ -131,13 +132,17 @@ def TkJeu():
     EnleverWidget()
 
     TkAfficherMatrice()
-    event()
 
     TkJeuButtonMenu = Button(tkFenetre, text="Retourner au menu", command=TkMenuPrincipal)
     PositionRelative(TkJeuButtonMenu, [0.80, 0.90])
 
     TkJeuButtonGeneration = Button(tkFenetre, text="Générer une map", command=Generer)
     PositionRelative(TkJeuButtonGeneration, [0.8, 0.25])
+
+    tkFenetre.bind('<Up>', lambda event: Deplacement(event, 1))
+    tkFenetre.bind('<Down>', lambda event: Deplacement(event, 0))
+    tkFenetre.bind('<Right>', lambda event: Deplacement(event, 3))
+    tkFenetre.bind('<Left>', lambda event: Deplacement(event, 2))
 
 def TkOption():
     EnleverWidget()
@@ -180,29 +185,36 @@ def Generer():
 
     # Gère les déplacemnts du joueur {Statut : En Developpement}
 
-def event():
-    tkFenetre.bind("<Up>", Deplacement(event,0))
-    tkFenetre.bind("<Down>", Deplacement(event,1))
-    tkFenetre.bind("<Right>", Deplacement(event,2))
-    tkFenetre.bind("<Left>", Deplacement(event,3))
-
 def Deplacement(event, args): 
     if args == 0 :
+        print("Deplacement : Haut")
         if mMatrice.GetValue([lCoordJoueur[0], lCoordJoueur[1]+1]) == 0:
+            mMatrice.SetValue(lCoordJoueur, 0)
             lCoordJoueur[1]=lCoordJoueur[1]+1
+            mMatrice.SetValue(lCoordJoueur, 2)
+            tkCanvas.move(canJoueur, 0, ilImageDimension[0]*lScale[0])
     elif args == 1 :
+        print("Deplacement : Bas")
         if mMatrice.GetValue([lCoordJoueur[0], lCoordJoueur[1]-1]) == 0:
+            mMatrice.SetValue(lCoordJoueur, 0)
             lCoordJoueur[1]=lCoordJoueur[1]-1
+            mMatrice.SetValue(lCoordJoueur, 2)
+            tkCanvas.move(canJoueur, 0, -ilImageDimension[0]*lScale[0])
     elif args == 2 :
+        print("Deplacement : Gauche")
         if mMatrice.GetValue([lCoordJoueur[0]-1, lCoordJoueur[1]]) == 0:
+            mMatrice.SetValue(lCoordJoueur, 0)
             lCoordJoueur[0]=lCoordJoueur[0]-1
+            mMatrice.SetValue(lCoordJoueur, 2)
+            tkCanvas.move(canJoueur, -ilImageDimension[0]*lScale[0], 0)
     elif args == 3 :
+        print("Deplacement : Droite")
         if mMatrice.GetValue([lCoordJoueur[0]+1, lCoordJoueur[1]]) == 0:
+            mMatrice.SetValue(lCoordJoueur, 0)
             lCoordJoueur[0]=lCoordJoueur[0] +1
-    
-    print(str(canJoueur))
-    print("New CoordX = " + str(lCoordJoueur[0]*ilImageDimension[0]*lScale[0]) + ", New CoordY = " + str(lCoordJoueur[1]*ilImageDimension[0]*lScale[0]))
-    tkCanvas.move(canJoueur, lCoordJoueur[0]*ilImageDimension[0]*lScale[0], lCoordJoueur[1]*ilImageDimension[0]*lScale[0])
+            mMatrice.SetValue(lCoordJoueur, 2)
+            tkCanvas.move(canJoueur, ilImageDimension[0]*lScale[0], 0)
+   
 
 #---------------------------------------------------------------------------------------------------------------
 #                                                 Option
