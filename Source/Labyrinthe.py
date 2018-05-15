@@ -15,7 +15,7 @@ global ilImageDimension, mMatrice, mCaseCoord, lScale, lDefaultSize
     # Affiche dans tkinter la matrice niveau {Statut : En fonctionnel / à Optimiser}
 
 def TkAfficherMatrice():
-    global lCoordJoueur, canJoueur
+    global lCoordJoueur, canJoueur, tkCanvas
     
     tkCanvas=Canvas(tkFenetre)
     tkCanvas.pack(fill=BOTH, expand=1)
@@ -202,7 +202,7 @@ def Deplacement(event, args):
     
     print(str(canJoueur))
     print("New CoordX = " + str(lCoordJoueur[0]*ilImageDimension[0]*lScale[0]) + ", New CoordY = " + str(lCoordJoueur[1]*ilImageDimension[0]*lScale[0]))
-    canJoueur.move(lCoordJoueur[0]*ilImageDimension[0]*lScale[0], lCoordJoueur[1]*ilImageDimension[0]*lScale[0])
+    tkCanvas.move(canJoueur, lCoordJoueur[0]*ilImageDimension[0]*lScale[0], lCoordJoueur[1]*ilImageDimension[0]*lScale[0])
 
 #---------------------------------------------------------------------------------------------------------------
 #                                                 Option
