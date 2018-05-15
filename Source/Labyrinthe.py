@@ -65,13 +65,13 @@ def TkMenuPrincipal():
     tkMenuLabel = Label(tkFenetre, text="Labyrinthe")
     PositionRelative(tkMenuLabel, [0.5, 0.25])
 
-    tkMenuButtonJouer = Button(tkFenetre, text="Jouer", command=lambda:TkJeu())
+    tkMenuButtonJouer = Button(tkFenetre, text="Jouer", command=TkJeu)
     PositionRelative(tkMenuButtonJouer, [0.5, 0.45])
 
-    tkMenuButtonCreer = Button(tkFenetre, text="Créer", command=lambda:TkEditeur())
+    tkMenuButtonCreer = Button(tkFenetre, text="Créer", command=TkEditeur)
     PositionRelative(tkMenuButtonCreer, [0.5, 0.55])
 
-    tkMenuButtonOption = Button(tkFenetre, text="Option", command=lambda:TkOption())
+    tkMenuButtonOption = Button(tkFenetre, text="Option", command=TkOption)
     PositionRelative(tkMenuButtonOption, [0.5, 0.60])
 
     tkMenuButtonQuitter = Button(tkFenetre, text="Quitter", command=tkFenetre.destroy)
@@ -115,7 +115,7 @@ def TkEditeur():
     tkEditeurButtonEnnemi = Button(tkFenetre, bg="red", command=lambda:SetEditionSet(4))
     PositionRelative(tkEditeurButtonEnnemi, [0.88, 0.5])
 
-    TkEditeurButtonMenu = Button(tkFenetre, text="Retourner au menu", command=lambda:TkMenuPrincipal())
+    TkEditeurButtonMenu = Button(tkFenetre, text="Retourner au menu", command=TkMenuPrincipal)
     PositionRelative(TkEditeurButtonMenu, [0.80, 0.90])
 
     EditeurEvent()
@@ -131,10 +131,10 @@ def TkJeu():
 
     TkAfficherMatrice()
 
-    TkJeuButtonMenu = Button(tkFenetre, text="Retourner au menu", command=lambda:TkMenuPrincipal())
+    TkJeuButtonMenu = Button(tkFenetre, text="Retourner au menu", command=TkMenuPrincipal)
     PositionRelative(TkJeuButtonMenu, [0.80, 0.90])
 
-    TkJeuButtonGeneration = Button(tkFenetre, text="Générer une map", command=lambda:Generer())
+    TkJeuButtonGeneration = Button(tkFenetre, text="Générer une map", command=Generer)
     PositionRelative(TkJeuButtonGeneration, [0.8, 0.25])
 
 def TkOption():
@@ -142,7 +142,7 @@ def TkOption():
 
     Fullsceen()
 
-    tkOptionButtonMenu = Button(tkFenetre, text="Retourner au Menu", command=lambda:TkMenuPrincipal())
+    tkOptionButtonMenu = Button(tkFenetre, text="Retourner au Menu", command=TkMenuPrincipal)
     PositionRelative(tkOptionButtonMenu, [0.80,0.90])
 
 #---------------------------------------------------------------------------------------------------------------
