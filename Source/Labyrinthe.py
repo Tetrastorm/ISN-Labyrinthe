@@ -393,6 +393,8 @@ def RandomLevelGeneration():
         bot.append([xbot,ybot])
         print(xbot)
     
+        mMatrice.Switch(2, 1)
+
         ## Creer passage
         #laby[xbot][ybot]=0
         mMatrice.SetValue([xbot, ybot], 0)
