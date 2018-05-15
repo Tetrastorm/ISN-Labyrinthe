@@ -16,7 +16,8 @@ global ilImageDimension, mMatrice, mCaseCoord, lScale, lDefaultSize
 
 def TkAfficherMatrice():
     global lCoordJoueur, canJoueur, tkCanvas
-    
+    canJoueur = None
+
     tkCanvas=Canvas(tkFenetre)
     tkCanvas.pack(fill=BOTH, expand=1)
 
@@ -35,7 +36,8 @@ def TkAfficherMatrice():
                 tkCanvas.create_rectangle((x * (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1])), (x * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="grey")
             elif mMatrice.GetValue([x, y]) == 4:
                 tkCanvas.create_rectangle((x * (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1])), (x * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="red")
-
+    if canJoueur != None:
+        tkCanvas.lift(canJoueur)
 #---------------------------------------------------------------------------------------------------------------
 #                                           Interface Utilisateur
 #---------------------------------------------------------------------------------------------------------------
@@ -214,7 +216,9 @@ def Deplacement(event, args):
             lCoordJoueur[0]=lCoordJoueur[0] +1
             mMatrice.SetValue(lCoordJoueur, 2)
             tkCanvas.move(canJoueur, ilImageDimension[0]*lScale[0], 0)
-   
+
+    print("Deplacement : New lCoordJoueur : " + str(lCoordJoueur))
+
 
 #---------------------------------------------------------------------------------------------------------------
 #                                                 Option
