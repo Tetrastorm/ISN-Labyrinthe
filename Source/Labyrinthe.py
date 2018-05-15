@@ -364,29 +364,29 @@ def RandomLevelGeneration():
             #if (laby[xbot+1][ybot]+laby[xbot][ybot+1]+laby[xbot+1][ybot+1]==0): 
             if mMatrice.GetValue([xbot+1, ybot]) + mMatrice.GetValue([xbot,ybot+1]) + mMatrice.GetValue([xbot+1,ybot+1]) == 0:
                 #laby[xbot][ybot]=-1
-                mMatrice.SetValue([xbot,ybot],-1)
+                mMatrice.SetValue([xbot,ybot],2)
     
     
         if (xbot>0) and (ybot<ymax-1):
             #if (laby[xbot-1][ybot]+laby[xbot][ybot+1]+laby[xbot-1][ybot+1]==0):
             if mMatrice.GetValue([xbot-1,ybot]) + mMatrice.GetValue([xbot,ybot+1]) + mMatrice.GetValue([xbot-1,ybot+1]) == 0:
                 #laby[xbot][ybot]=-1
-                mMatrice.SetValue([xbot,ybot],-1)
+                mMatrice.SetValue([xbot,ybot],2)
         
         if (xbot<xmax-1)and(ybot>0):
             #if(laby[xbot+1][ybot]+laby[xbot][ybot-1]+laby[xbot+1][ybot-1]==0):
             if mMatrice.GetValue([xbot+1,ybot]) + mMatrice.GetValue([xbot,ybot-1]) + mMatrice.GetValue([xbot+1,ybot-1]) == 0:
                 #laby[xbot][ybot]=-1
-                mMatrice.SetValue([xbot,ybot],-1)
+                mMatrice.SetValue([xbot,ybot],2)
 
         if (xbot>0)and(ybot>0):
             #if (laby[xbot-1][ybot]+laby[xbot][ybot-1]+laby[xbot-1][ybot-1]==0):
             if mMatrice.GetValue([xbot-1,ybot]) + mMatrice.GetValue([xbot,ybot-1]) + mMatrice.GetValue([xbot-1,ybot-1]) == 0:
                 #laby[xbot][ybot]=-1
-                mMatrice.SetValue([xbot,ybot],-1)
+                mMatrice.SetValue([xbot,ybot],2)
     
         #if laby[xbot][ybot]==-1:
-        if mMatrice.GetValue([xbot,ybot]):
+        if mMatrice.GetValue([xbot,ybot])==2:
             ybot=ybotsave
             xbot=xbotsave
         
