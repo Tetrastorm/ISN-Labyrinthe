@@ -38,6 +38,7 @@ def TkAfficherMatrice():
                 tkCanvas.create_rectangle((x * (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1])), (x * (ilImageDimension[0]*lScale[0]) + (ilImageDimension[0]*lScale[0])), (y * (ilImageDimension[1]*lScale[1]) + (ilImageDimension[1]*lScale[1])), fill="red")
     if canJoueur != None:
         tkCanvas.lift(canJoueur)
+
 #---------------------------------------------------------------------------------------------------------------
 #                                           Interface Utilisateur
 #---------------------------------------------------------------------------------------------------------------
@@ -138,7 +139,7 @@ def TkJeu():
     TkJeuButtonMenu = Button(tkFenetre, text="Retourner au menu", command=TkMenuPrincipal)
     PositionRelative(TkJeuButtonMenu, [0.80, 0.90])
 
-    TkJeuButtonGeneration = Button(tkFenetre, text="Générer une map", command=Generer)
+    TkJeuButtonGeneration = Button(tkFenetre, text="Générer une map", command=RandomLevelGeneration)
     PositionRelative(TkJeuButtonGeneration, [0.8, 0.25])
 
     tkFenetre.bind('<Up>', lambda event: Deplacement(event, 1))
@@ -149,10 +150,14 @@ def TkJeu():
 def TkOption():
     EnleverWidget()
 
-    Fullsceen()
+    TkOptionLabel = Label(tkFenetre, text="Option")
+    PositionRelative(TkOptionLabel, [0.5, 0.05])
+
+    tkOptionButtonFullscreen = Button(tkFenetre, text="Fullscreen", command=Fullscreen)
+    PositionRelative(tkOptionButtonFullscreen, [0.1, 0.15])
 
     tkOptionButtonMenu = Button(tkFenetre, text="Retourner au Menu", command=TkMenuPrincipal)
-    PositionRelative(tkOptionButtonMenu, [0.80,0.90])
+    PositionRelative(tkOptionButtonMenu, [0.80, 0.90])
 
 #---------------------------------------------------------------------------------------------------------------
 #                                                Editeur
@@ -181,37 +186,33 @@ def Edition(arg):
 #                                                 Jeu
 #---------------------------------------------------------------------------------------------------------------
 
-def Generer():
-    RandomLevelGeneration()
-    TkJeu()
-
     # Gère les déplacemnts du joueur {Statut : En Developpement}
 
 def Deplacement(event, args): 
     if args == 0 :
         print("Deplacement : Haut")
-        if mMatrice.GetValue([lCoordJoueur[0], lCoordJoueur[1]+1]) == 0:
+        if mMatrice.GetValue([lCoordJoueur[0], lCoordJoueur[1]+1]) == 0 or mMatrice.GetValue([lCoordJoueur[0],lCoordJoueur[1]+1]) == 3:
             mMatrice.SetValue(lCoordJoueur, 0)
             lCoordJoueur[1]=lCoordJoueur[1]+1
             mMatrice.SetValue(lCoordJoueur, 2)
             tkCanvas.move(canJoueur, 0, ilImageDimension[1]*lScale[1])
     elif args == 1 :
         print("Deplacement : Bas")
-        if mMatrice.GetValue([lCoordJoueur[0], lCoordJoueur[1]-1]) == 0:
+        if mMatrice.GetValue([lCoordJoueur[0], lCoordJoueur[1]-1]) == 0 or mMatrice.GetValue([lCoordJoueur[0],lCoordJoueur[1]-1]) == 3:
             mMatrice.SetValue(lCoordJoueur, 0)
             lCoordJoueur[1]=lCoordJoueur[1]-1
             mMatrice.SetValue(lCoordJoueur, 2)
             tkCanvas.move(canJoueur, 0, -ilImageDimension[1]*lScale[1])
     elif args == 2 :
         print("Deplacement : Gauche")
-        if mMatrice.GetValue([lCoordJoueur[0]-1, lCoordJoueur[1]]) == 0:
+        if mMatrice.GetValue([lCoordJoueur[0]-1, lCoordJoueur[1]]) == 0 or mMatrice.GetValue([lCoordJoueur[0]-1,lCoordJoueur[1]]) == 3:
             mMatrice.SetValue(lCoordJoueur, 0)
             lCoordJoueur[0]=lCoordJoueur[0]-1
             mMatrice.SetValue(lCoordJoueur, 2)
             tkCanvas.move(canJoueur, -ilImageDimension[0]*lScale[0], 0)
     elif args == 3 :
         print("Deplacement : Droite")
-        if mMatrice.GetValue([lCoordJoueur[0]+1, lCoordJoueur[1]]) == 0:
+        if mMatrice.GetValue([lCoordJoueur[0]+1, lCoordJoueur[1]]) == 0 or mMatrice.GetValue([lCoordJoueur[0]+1,lCoordJoueur[1]]) == 3:
             mMatrice.SetValue(lCoordJoueur, 0)
             lCoordJoueur[0]=lCoordJoueur[0] +1
             mMatrice.SetValue(lCoordJoueur, 2)
@@ -219,14 +220,20 @@ def Deplacement(event, args):
 
     print("Deplacement : New lCoordJoueur : " + str(lCoordJoueur))
 
-
 #---------------------------------------------------------------------------------------------------------------
 #                                                 Option
 #---------------------------------------------------------------------------------------------------------------
 
-def Fullsceen():
-    tkFenetre.attributes("-fullscreen", True)
-    print(str(tkFenetre.getboolean("-fullsceen")))
+def Fullscreen():
+    global bFullscreen
+    
+    if bFullscreen:
+        bFullscreen = False
+    else:
+        bFullscreen = True
+
+    tkFenetre.attributes("-fullscreen", bFullscreen)
+    print("Fullsceen =" + str(bFullscreen))
 
 #---------------------------------------------------------------------------------------------------------------
 #                                                 Outils
@@ -237,8 +244,8 @@ def Fullsceen():
 def PositionRelative(widget, coordRelative = [0.5,0.5]):
     if 0 <= coordRelative[0] <= 1 and 0 <= coordRelative[1] <= 1:
         tkFenetre.update()
-        Coord = [tkFenetre.winfo_width() * coordRelative[0], tkFenetre.winfo_height() * coordRelative[1]]
-        widget.place(x = Coord[0], y = Coord[1])
+        lTempCoord = [tkFenetre.winfo_width() * coordRelative[0], tkFenetre.winfo_height() * coordRelative[1]]
+        widget.place(x = lTempCoord[0], y = lTempCoord[1])
     else:
         print("Erreur : Les coordonnée relative de " + str(widget) + " a au moins un de ses valeurs pas compris dans l'intervalle [0,1]")
    
@@ -436,6 +443,10 @@ def RandomLevelGeneration():
     ##Initialisation de la liste
     bot=[]
 
+    mMatrice.SetValue([0, int(ymax/2)], 2)
+
+    TkJeu()
+
 def AI_Perception(ActorInfo, OtherActorInfo, Range = 5):    
     if sqrt((OtherActorInfo[0] - ActorInfo[0])^2, (OtherActorInfo[1] - ActorInfo[1])^2) <= Range:
         ActorDistance = sqrt((ActorInfo[0])^2, (ActorInfo[1])^2)
@@ -468,5 +479,7 @@ ilImageDimension = [15, 15]
 
 mMatrice = Matrix(lTailleMatrice)
 mMatrice.DebugDisplay()
+
+bFullscreen = False
 
 GUI()
