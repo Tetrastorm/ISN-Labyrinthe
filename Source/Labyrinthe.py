@@ -63,6 +63,7 @@ def GUI():
 def TkMenuPrincipal():
     print("Menu Principal : Chargement... ")
     SetState(0)
+    iAction = 0
     print("Menu Principal : iState = " + str(iState))
 
     EnleverWidget()
@@ -128,12 +129,10 @@ def TkEditeur():
     # Créer les widgets de la partie jeu {Statut : En Developpement}
 
 def TkJeu():
-    global iAction
-
     print("Jeu : Chargement...")
 
     SetState(1)
-    iAction = 0
+
     print("Jeu : iState = " + str(iState))
     EnleverWidget()
 
@@ -153,6 +152,8 @@ def TkJeu():
 def TkOption():
     EnleverWidget()
 
+    SetState(3)
+
     TkOptionLabel = Label(tkFenetre, text="Option")
     PositionRelative(TkOptionLabel, [0.5, 0.05])
 
@@ -161,6 +162,18 @@ def TkOption():
 
     tkOptionButtonMenu = Button(tkFenetre, text="Retourner au Menu", command=TkMenuPrincipal)
     PositionRelative(tkOptionButtonMenu, [0.80, 0.90])
+
+def TkVictory():
+    EnleverWidget()
+
+    SetState(4)
+    print(str(iAction))
+
+    tkLabelScore = Label(tkFenetre, text="Score : " + str(iAction))
+    PositionRelative(tkLabelScore, [0.5,0.5])
+
+    tkOptionButtonMenu = Button(tkFenetre, text="Retourner au Menu", command=TkMenuPrincipal)
+    PositionRelative(tkOptionButtonMenu, [0.55, 0.90])
 
 #---------------------------------------------------------------------------------------------------------------
 #                                                Editeur
@@ -192,43 +205,55 @@ def Edition(arg):
     # Gère les déplacemnts du joueur {Statut : En Developpement}
 
 def Deplacement(event, args): 
-    iAction =+ 1
+    global iAction
+
+    iAction += 1
+
     if args == 0 :
         print("Deplacement : Haut")
-        if mMatrice.GetValue([lCoordJoueur[0], lCoordJoueur[1]+1]) == 0 or mMatrice.GetValue([lCoordJoueur[0],lCoordJoueur[1]+1]) == 3:
+        if mMatrice.GetValue([lCoordJoueur[0], lCoordJoueur[1]+1]) == 0:
             mMatrice.SetValue(lCoordJoueur, 0)
             lCoordJoueur[1]=lCoordJoueur[1]+1
             mMatrice.SetValue(lCoordJoueur, 2)
             tkCanvas.move(canJoueur, 0, ilImageDimension[1]*lScale[1])
+        elif mMatrice.GetValue([lCoordJoueur[0],lCoordJoueur[1]+1]) == 3:
+            TkVictory()
     elif args == 1 :
         print("Deplacement : Bas")
-        if mMatrice.GetValue([lCoordJoueur[0], lCoordJoueur[1]-1]) == 0 or mMatrice.GetValue([lCoordJoueur[0],lCoordJoueur[1]-1]) == 3:
+        if mMatrice.GetValue([lCoordJoueur[0], lCoordJoueur[1]-1]) == 0:
             mMatrice.SetValue(lCoordJoueur, 0)
             lCoordJoueur[1]=lCoordJoueur[1]-1
             mMatrice.SetValue(lCoordJoueur, 2)
             tkCanvas.move(canJoueur, 0, -ilImageDimension[1]*lScale[1])
+        elif mMatrice.GetValue([lCoordJoueur[0],lCoordJoueur[1]-1]) == 3:
+            TkVictory()
     elif args == 2 :
         print("Deplacement : Gauche")
-        if mMatrice.GetValue([lCoordJoueur[0]-1, lCoordJoueur[1]]) == 0 or mMatrice.GetValue([lCoordJoueur[0]-1,lCoordJoueur[1]]) == 3:
+        if mMatrice.GetValue([lCoordJoueur[0]-1, lCoordJoueur[1]]) == 0:
             mMatrice.SetValue(lCoordJoueur, 0)
             lCoordJoueur[0]=lCoordJoueur[0]-1
             mMatrice.SetValue(lCoordJoueur, 2)
             tkCanvas.move(canJoueur, -ilImageDimension[0]*lScale[0], 0)
+        elif mMatrice.GetValue([lCoordJoueur[0]-1,lCoordJoueur[1]]) == 3:
+            TkVictory()
     elif args == 3 :
         print("Deplacement : Droite")
-        if mMatrice.GetValue([lCoordJoueur[0]+1, lCoordJoueur[1]]) == 0 or mMatrice.GetValue([lCoordJoueur[0]+1,lCoordJoueur[1]]) == 3:
+        if mMatrice.GetValue([lCoordJoueur[0]+1, lCoordJoueur[1]]) == 0:
             mMatrice.SetValue(lCoordJoueur, 0)
             lCoordJoueur[0]=lCoordJoueur[0] +1
             mMatrice.SetValue(lCoordJoueur, 2)
             tkCanvas.move(canJoueur, ilImageDimension[0]*lScale[0], 0)
+        elif mMatrice.GetValue([lCoordJoueur[0]+1,lCoordJoueur[1]]) == 3:
+            TkVictory()
 
+    print("Deplacemnt : iAction = " + str(iAction))
     print("Deplacement : New lCoordJoueur : " + str(lCoordJoueur))
 
 #---------------------------------------------------------------------------------------------------------------
 #                                                 Option
 #---------------------------------------------------------------------------------------------------------------
 
-def Fullsceen():
+def Fullscreen():
     global bFullscreen
     
     if bFullscreen:
@@ -298,6 +323,8 @@ def Resize(event):
                TkEditeur()
            elif iState == 3:
                TkOption()
+           elif iState == 4:
+               TkVictory()
 
 def SetEditionSet(iValue):
     global iEditionSet
@@ -470,6 +497,7 @@ def AI_Perception(ActorInfo, OtherActorInfo, Range = 5):
 #---------------------------------------------------------------------------------------------------------------
 
 iEditionSet = 0 
+iAction = 0
 
 lDefaultSize = [720, 450]
 lTailleMatrice = [30, 30]
