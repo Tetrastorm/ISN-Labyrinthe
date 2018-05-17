@@ -127,9 +127,12 @@ def TkEditeur():
     # Créer les widgets de la partie jeu {Statut : En Developpement}
 
 def TkJeu():
+    global iAction
+
     print("Jeu : Chargement...")
 
     SetState(1)
+    iAction = 0
     print("Jeu : iState = " + str(iState))
     EnleverWidget()
 
@@ -188,6 +191,7 @@ def Generer():
     # Gère les déplacemnts du joueur {Statut : En Developpement}
 
 def Deplacement(event, args): 
+    iAction =+ 1
     if args == 0 :
         print("Deplacement : Haut")
         if mMatrice.GetValue([lCoordJoueur[0], lCoordJoueur[1]+1]) == 0:
@@ -226,7 +230,7 @@ def Deplacement(event, args):
 
 def Fullsceen():
     tkFenetre.attributes("-fullscreen", True)
-    print(str(tkFenetre.getboolean("-fullsceen")))
+    print(str(tkFenetre.cget("-fullsceen")))
 
 #---------------------------------------------------------------------------------------------------------------
 #                                                 Outils
