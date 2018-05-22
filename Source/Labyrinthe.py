@@ -78,10 +78,10 @@ def TkMenuPrincipal():
     PositionRelative(tkMenuButtonCreer, [0.5, 0.55])
 
     tkMenuButtonOption = Button(tkFenetre, text="Option", command=TkOption)
-    PositionRelative(tkMenuButtonOption, [0.5, 0.60])
+    PositionRelative(tkMenuButtonOption, [0.5, 0.65])
 
     tkMenuButtonQuitter = Button(tkFenetre, text="Quitter", command=tkFenetre.destroy)
-    PositionRelative(tkMenuButtonQuitter, [0.5, 0.65])
+    PositionRelative(tkMenuButtonQuitter, [0.5, 0.75])
 
     # Créer les widgets de l'editeur de niveau {Statut : En Developpement}
 
@@ -171,9 +171,19 @@ def TkVictory():
 
     tkLabelScore = Label(tkFenetre, text="Score : " + str(iAction))
     PositionRelative(tkLabelScore, [0.5,0.5])
-
+    
+    tkContinuer= Button(tkFenetre, text="Continuer", command=Continuer)
+    PositionRelative(tkContinuer, [0.5, 0.20])
+    
     tkOptionButtonMenu = Button(tkFenetre, text="Retourner au Menu", command=TkMenuPrincipal)
     PositionRelative(tkOptionButtonMenu, [0.55, 0.90])
+    
+def Continuer():
+    EnleverWidget()
+    
+    RandomLevelGeneration()
+
+
 
 #---------------------------------------------------------------------------------------------------------------
 #                                                Editeur
