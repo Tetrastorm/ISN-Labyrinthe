@@ -67,8 +67,6 @@ def TkMenuPrincipal():
     print("Menu Principal : iState = " + str(iState))
 
     EnleverWidget()
-    TkVersion=Label(tkFenetre, text="v.ALPHA-0.2.8")
-    PositionRelative(TkVersion, [0.88,0.95])
     
     tkMenuLabel = Label(tkFenetre, text="Labyrinthe")
     PositionRelative(tkMenuLabel, [0.5, 0.25])
