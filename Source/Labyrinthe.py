@@ -1,9 +1,6 @@
 from tkinter import *
 from math import *
 from random import *
-import matplotlib
-import matplotlib.pyplot as plt
-from random import *
 from Matrix import *
 
 global ilImageDimension, mMatrice, mCaseCoord, lScale, lDefaultSize
